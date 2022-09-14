@@ -37,8 +37,7 @@ export const OrdersTable = ({ data }) => {
           </TableHead>
           <TableBody>
             {data?.map((event, id) => {
-              {/* TODO: Add status prop to Google Sheet Data */ }
-
+              // TODO: Add status prop to Google Sheet Data
               return (
                 <TableRow key={id} hover>
                   <TableCell variant='body' align='center'>
