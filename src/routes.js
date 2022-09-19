@@ -1,39 +1,49 @@
-import { Navigate } from 'react-router-dom';
-import { Layout } from './components/layout';
-import { NotFound } from './pages/not-found';
-import { Orders } from './pages/orders';
-import { Reports } from './pages/reports';
-import { Settings } from './pages/settings';
+import { Navigate } from "react-router-dom";
+import { Layout } from "./components/layout";
+import { NotFound } from "./pages/not-found";
+import { Events } from "./pages/events";
+import { Reports } from "./pages/reports";
+import { Settings } from "./pages/settings";
 
 export const routes = [
   {
-    path: '/',
-    element: <Navigate to="/dashboard" />
+    path: "/",
+    element: <Navigate to="/dashboard" />,
   },
   {
-    path: 'dashboard',
+    path: "dashboard",
     element: <Layout />,
     children: [
       {
-        path: '',
-        element: <Reports />
+        path: "",
+        element: <Reports />,
       },
       {
-        path: 'orders',
-        element: <Orders />
+        path: "settings",
+        element: <Settings />,
       },
       {
-        path: 'settings',
-        element: <Settings />
+        path: "*",
+        element: <Navigate to="/404" />,
       },
-      {
-        path: '*',
-        element: <Navigate to="/404" />
-      }
-    ]
+    ],
   },
   {
-    path: '404',
-    element: <NotFound />
-  }
+    path: "events",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Events />,
+      },
+      {
+        path: "*",
+        element: <Navigate to="/404" />,
+      },
+    ],
+  },
+  {
+    path: "404",
+    element: <NotFound />,
+  },
 ];

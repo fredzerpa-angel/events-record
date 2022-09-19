@@ -301,7 +301,7 @@ export const MOCKUP_EVENTS = [
   },
   {
     "subject": "Reto por Amor y Lealtad a la Patria (GHC y  Soberanía)",
-    "project": "",
+    "project": "Amor y Lealtad a la Patria",
     "mission": "",
     "attendees": "",
     "manager": "José Velásquez (Formación Permanente). Yulimar González (GHC)",
@@ -313,7 +313,7 @@ export const MOCKUP_EVENTS = [
   },
   {
     "subject": "I Olimpiadas Escolares de Historia Neoespartana",
-    "project": "",
+    "project": "Historia Neoespartana",
     "mission": "Promover el conocimiento de la Historia y la Geografía Regional Neoespartana, como una manera de fortalecerlaCultura e Identidad Insular",
     "attendees": "Estudiantes de 6to. grado (6) y estudiantes de MG (5)",
     "manager": "José Velásquez (Formación Permanente)",

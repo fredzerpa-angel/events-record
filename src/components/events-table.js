@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Scrollbar } from './scrollbar';
 
-export const OrdersTable = ({ data }) => {
+export const EventsTable = ({ data }) => {
 
   return (
     <div>
@@ -81,6 +81,6 @@ export const OrdersTable = ({ data }) => {
   );
 };
 
-OrdersTable.propTypes = {
+EventsTable.propTypes = {
   data: PropTypes.array.isRequired
 };

@@ -1,26 +1,24 @@
 import { Helmet } from 'react-helmet';
 import { Box, Card, CardHeader, Container, Divider, Grid, Typography } from '@mui/material';
+import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/reports/summary-item';
-import { OrdersTable } from '../components/orders-table';
-import { Cube as CubeIcon } from '../icons/cube';
-import { ShoppingCart as ShoppingCartIcon } from '../icons/shopping-cart';
-import { Cash as CashIcon } from '../icons/cash';
+import { EventsTable } from '../components/events-table';
 import { MOCKUP_EVENTS } from '../__mocks__/events';
 
 const stats = [
   {
     content: String(MOCKUP_EVENTS.length),
-    icon: ShoppingCartIcon,
+    icon: EmojiEvents,
     label: 'Eventos'
   },
   {
     content: String(MOCKUP_EVENTS.reduce((total, { participants }) => total + participants, 0)),
-    icon: CubeIcon,
+    icon: Groups,
     label: 'Participantes'
   },
   {
     content: MOCKUP_EVENTS.at(0).project,
-    icon: CashIcon,
+    icon: Event,
     label: 'Ultimo Evento'
   }
 ];
@@ -73,7 +71,7 @@ export const Reports = () => (
             <Card variant="outlined">
               <CardHeader title="Ultimos Eventos" />
               <Divider />
-              <OrdersTable data={MOCKUP_EVENTS} />
+              <EventsTable data={MOCKUP_EVENTS.filter((event, i) => i < 5)} />
             </Card>
           </Grid>
         </Grid>

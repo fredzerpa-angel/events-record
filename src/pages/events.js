@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Button, Card, Container, Divider, TablePagination, Typography } from '@mui/material';
-import { OrdersFilter } from '../components/orders/orders-filter';
-import { OrdersTable } from '../components/orders-table';
+import {Add as AddIcon} from '@mui/icons-material';
+import { EventsFilter } from '../components/events/events-filter';
+import { EventsTable } from '../components/events-table';
 import { orders } from '../__mocks__/orders';
 
-export const Orders = () => {
+export const Events = () => {
   const [mode, setMode] = useState('table');
   const [query, setQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -33,7 +34,7 @@ export const Orders = () => {
   return (
     <>
       <Helmet>
-        <title>Orders | Eventos ASOCOL</title>
+        <title>Eventos | ASOCOL</title>
       </Helmet>
       <Box
         sx={{
@@ -53,19 +54,20 @@ export const Orders = () => {
               color="textPrimary"
               variant="h4"
             >
-              Orders
+              Eventos
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Button
               color="primary"
               size="large"
               variant="contained"
+              startIcon={<AddIcon />}
             >
-              Add
+              Participante
             </Button>
           </Box>
           <Card variant="outlined">
-            <OrdersFilter
+            <EventsFilter
               mode={mode}
               onModeChange={handleModeChange}
               onQueryChange={handleQueryChange}
@@ -73,7 +75,7 @@ export const Orders = () => {
             />
             <Divider />
             {/* TODO: Use Events Mock-up data */}
-            <OrdersTable orders={orders} />
+            <EventsTable orders={orders} />
             <Divider />
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
