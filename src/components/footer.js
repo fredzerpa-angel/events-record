@@ -36,7 +36,7 @@ export const Footer = () => (
           underline="hover"
           variant="body2"
         >
-          About Us
+          El Angel
         </Link>
       </Box>
     </Container>

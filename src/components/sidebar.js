@@ -6,7 +6,7 @@ const items = [
   {
     href: '/dashboard',
     icon: HomeIcon,
-    label: 'Home'
+    label: 'Inicio'
   },
   {
     href: '/events',
@@ -66,7 +66,7 @@ export const Sidebar = () => {
                   color: 'inherit'
                 }}
               >
-                <Icon fontSize='large'/>
+                <Icon />
               </ListItemIcon>
               <ListItemText
                 primary={label}
