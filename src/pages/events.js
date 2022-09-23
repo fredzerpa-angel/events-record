@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Button, Card, Container, Divider, TablePagination, Typography } from '@mui/material';
-import {Add as AddIcon} from '@mui/icons-material';
+import {
+  Box,
+  Card,
+  Container,
+  Divider,
+  TablePagination,
+  Typography,
+} from '@mui/material';
 import { EventsFilter } from '../components/events/events-filter';
 import { EventsTable } from '../components/events-table';
 import { orders } from '../__mocks__/orders';
+import AddParticipantsModal from '../components/modals/add-participants-modal';
 
 export const Events = () => {
   const [mode, setMode] = useState('table');
@@ -18,7 +25,7 @@ export const Events = () => {
     }
   };
 
-  const handleQueryChange = (newQuery) => {
+  const handleQueryChange = newQuery => {
     setQuery(newQuery);
   };
 
@@ -26,7 +33,7 @@ export const Events = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -39,34 +46,24 @@ export const Events = () => {
       <Box
         sx={{
           pb: 3,
-          pt: 8
+          pt: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <Box
             sx={{
               alignItems: 'center',
               display: 'flex',
-              mb: 3
+              mb: 3,
             }}
           >
-            <Typography
-              color="textPrimary"
-              variant="h4"
-            >
+            <Typography color='textPrimary' variant='h4'>
               Eventos
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <Button
-              color="primary"
-              size="large"
-              variant="contained"
-              startIcon={<AddIcon />}
-            >
-              Participante
-            </Button>
+            <AddParticipantsModal />
           </Box>
-          <Card variant="outlined">
+          <Card variant='outlined'>
             <EventsFilter
               mode={mode}
               onModeChange={handleModeChange}
@@ -79,7 +76,7 @@ export const Events = () => {
             <Divider />
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
-              component="div"
+              component='div'
               count={orders.length}
               rowsPerPage={rowsPerPage}
               page={page}

@@ -48,42 +48,6 @@ export const MOCKUP_EVENTS = [
     "status": "pending"
   },
   {
-    "project": "30° Olimpiadas Recreativas de Matemática",
-    "organization": "Sistema de Olimpiadas Recreativas",
-    "mission": "Desarrollar estrategias para la enseñanza de la Matemática, mejorar el nivel académico y estimular en los niños el uso de sus capacidades intelectuales: comprensión, capacidad de síntesis y juicio crítico.",
-    "attendees": "Estudiantes de Primaria (de 1ero. a 6to. grado - 10 estudiantes por grado)",
-    "manager": "Docentes de Aula. Docentes del área de Matemática. ",
-    "date": "23/08/2022",
-    "observations": "23 estudiantes clasificados a la prueba regional",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 49,
-    "status": "canceled"
-  },
-  {
-    "project": "Olimpiadas Recreativas del Lenguaje",
-    "organization": "Sistema de Olimpiadas Recreativas",
-    "mission": "Conocer las habilidades y destrezas comunicativas de los estudiantes, con base en el currículo básico nacional, mediante la realización de pruebas periódicas en las que se evalúan de forma recreativa las competencias lingüísticas.",
-    "attendees": "Estudiantes de Primaria (de 1ero. a 6to. grado - 10 estudiantes por grado)",
-    "manager": "Docentes de Aula. Docentes del área de Lengua y Literatura.",
-    "date": "02/10/2021",
-    "observations": "22 estudiantes clasificados a la prueba regional",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 13,
-    "status": "pending"
-  },
-  {
-    "project": "Olimpiadas Juveniles de Matemática",
-    "organization": "Asociación Venezolana de Competencias Matemáticas",
-    "mission": "Desarrollar estrategias para la enseñanza de la Matemática, mejorar el nivel académico y estimular en los jóvenes el uso de sus capacidades intelectuales: comprensión, capacidad de síntesis y juicio crítico.",
-    "attendees": "Estudiantes de Media General (de 1ero. a 5to. año - 10 estudiantes por año)",
-    "manager": "Docentes de Matemática del Nivel de Educación Media General",
-    "date": "06/12/2021",
-    "observations": "6 estudiantes clasificados a la prueba regional",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 14,
-    "status": "pending"
-  },
-  {
     "project": "Reporteros Zona Escolar",
     "organization": "LA MEGA",
     "mission": "Promover el periodismo escolar a través de la campaña #ZEreportero, donde los chicos en edades principalmente de bachillerato elaboran un video corto (de máximo 30-40 segundos) donde cuentan alguna actividad que se estén realizando en el colegio.",
@@ -120,18 +84,6 @@ export const MOCKUP_EVENTS = [
     "status": "completed"
   },
   {
-    "project": "",
-    "organization": "FUNVIE/Ecoamigos",
-    "mission": "Fortalecer la conciencia ecológica a través del cuidado de las playas neoespartanas,",
-    "attendees": "Estudiantes del Nivel de Educación Media General",
-    "manager": "Coordinadora Angélica Pérez",
-    "date": "15/06/2022",
-    "observations": "5to. año: 02/04. - 4to. año: 21/05",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 13,
-    "status": "canceled"
-  },
-  {
     "project": "III Encuentro Online de niños, niñas y jóvenes lectores. ",
     "organization": "ANDIEP",
     "mission": "Fortalecer la lectura y escritura a través de la creación e interpretación de textos narrativos.",
@@ -142,18 +94,6 @@ export const MOCKUP_EVENTS = [
     "type": "PROGRAMAS Y PROYECTOS",
     "participants": 37,
     "status": "pending"
-  },
-  {
-    "project": "30° Olimpiadas Recreativas de Matemática",
-    "organization": "Sistema de Olimpiadas Recreativas",
-    "mission": "Desarrollar estrategias para la enseñanza de la Matemática, mejorar el nivel académico y estimular en los niños el uso de sus capacidades intelectuales: comprensión, capacidad de síntesis y juicio crítico.",
-    "attendees": "Estudiantes de Primaria clasificados en la Olimpiada Preliminar.",
-    "manager": "Docentes de Aula. Docentes del área de Matemática. ",
-    "date": "26/02/2022",
-    "observations": "Oro: Mariangel González 1ero. B, Paola Bello, Christian Quintero",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 14,
-    "status": "canceled"
   },
   {
     "project": "Olimpiadas Recreativas del Lenguaje",
@@ -168,18 +108,6 @@ export const MOCKUP_EVENTS = [
     "status": "completed"
   },
   {
-    "project": "Olimpiadas Juveniles de Matemática",
-    "organization": "Asociación Venezolana de Competencias Matemáticas",
-    "mission": "Desarrollar estrategias para la enseñanza de la Matemática, mejorar el nivel académico y estimular en los jóvenes el uso de sus capacidades intelectuales: comprensión, capacidad de síntesis y juicio crítico.",
-    "attendees": "Estudiantes de Media General  clasificados en la Olimpiada Preliminar.",
-    "manager": "Docentes de Matemática del Nivel de Educación Media General",
-    "date": "08/09/2022",
-    "observations": "Oro: Susana Peña 2do. año - Plata:  Sophia Toba 1er. año A, Camila Toba 1er. año B",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 16,
-    "status": "canceled"
-  },
-  {
     "project": "30° Olimpiadas Recreativas de Matemática",
     "organization": "Sistema de Olimpiadas Recreativas",
     "mission": "Desarrollar estrategias para la enseñanza de la Matemática, mejorar el nivel académico y estimular en los niños el uso de sus capacidades intelectuales: comprensión, capacidad de síntesis y juicio crítico.",
@@ -190,18 +118,6 @@ export const MOCKUP_EVENTS = [
     "type": "PROGRAMAS Y PROYECTOS",
     "participants": 25,
     "status": "pending"
-  },
-  {
-    "project": "Olimpiadas Recreativas del Lenguaje",
-    "organization": "Sistema de Olimpiadas Recreativas",
-    "mission": "Conocer las habilidades y destrezas comunicativas de los estudiantes, con base en el currículo básico nacional, mediante la realización de pruebas periódicas en las que se evalúan de forma recreativa las competencias lingüísticas.",
-    "attendees": "Estudiantes de Primaria clasificados en la Olimpiada Regional",
-    "manager": "Docentes de Aula. Docentes del área de Lengua y Literatura.",
-    "date": "07/03/2022",
-    "observations": "Resultado: PENDIENTE",
-    "type": "PROGRAMAS Y PROYECTOS",
-    "participants": 14,
-    "status": "canceled"
   },
   {
     "project": "Olimpiadas Juveniles de Matemática",
@@ -229,18 +145,6 @@ export const MOCKUP_EVENTS = [
   },
   {
     "subject": "Reto de Ciencias Naturales",
-    "project": "",
-    "mission": "Fomentar las ciencias a través de actividades prácticas y útiles donde se evidencie proceso y resultado.",
-    "attendees": "Estudiantes de Media General",
-    "manager": "José Velásquez (Formación Permanente). Docentes del area de Ciencias.",
-    "date": "19/04/2022",
-    "observations": "Estudiantes clasificados a la siguiente fase: Catalina Lenain, Eduardo Peña, Oslybeth Eljuri, Isabella Bello",
-    "type": "RETOS MG",
-    "participants": 19,
-    "status": "canceled"
-  },
-  {
-    "subject": "Reto de Ciencias Naturales",
     "project": "Cocinando Ciencia: Plastilina Casera",
     "mission": "Elaborar con materiales de uso cotidiano una pastilina casera con la cual se puede propiciar el desarrolo de la motricidad y laceatividad en los niños. ",
     "attendees": "Estudiantes de 2do. año A: Catalina Lenain, Eduardo Peña, Oslybeth Eljuri, Isabella Bello",
@@ -249,30 +153,6 @@ export const MOCKUP_EVENTS = [
     "observations": "Clasificados a la fase Estadal.",
     "type": "RETOS MG",
     "participants": 18,
-    "status": "pending"
-  },
-  {
-    "subject": "Reto de Ciencias Naturales",
-    "project": "Cocinando Ciencia: Plastilina Casera",
-    "mission": "Elaborar con materiales de uso cotidiano una pastilina casera con la cual se puede propiciar el desarrolo de la motricidad y laceatividad en los niños. ",
-    "attendees": "Estudiantes de 2do. año A: Catalina Lenain, Eduardo Peña, Oslybeth Eljuri, Isabella Bello",
-    "manager": "José Velásquez (Formación Permanente). Yraida Marcano (Cs. Naturales)",
-    "date": "12/03/2022",
-    "observations": "Reto culminado.",
-    "type": "RETOS MG",
-    "participants": 27,
-    "status": "completed"
-  },
-  {
-    "subject": "Reto de Matemática",
-    "project": "",
-    "mission": "Propiciar el aprendizaje de las matemátcas de manera práctica y significativa.",
-    "attendees": "Estudiantes de Media General",
-    "manager": "José Velásquez (Formación Permanente). Luis Vásquez y Jesús Salgado (Matemática)",
-    "date": "25/10/2021",
-    "observations": "Estudiantes clasificados: Susana Peña, Giuliana González, Oslybet Eljuri, Catalina Lenaín, Isabella Bello, Santiago Pérez, Fabiana Quijada, Diego Sarmiento. ",
-    "type": "RETOS MG",
-    "participants": 49,
     "status": "pending"
   },
   {
@@ -286,18 +166,6 @@ export const MOCKUP_EVENTS = [
     "type": "RETOS MG",
     "participants": 44,
     "status": "completed"
-  },
-  {
-    "subject": "Reto por Amor y Lealtad a la Patria (GHC y  Soberanía)",
-    "project": "",
-    "mission": "Identificar los patrimonios del Estado Nueva Esparta para el fortalecimento de la identidad neoesparana.",
-    "attendees": "Estudiantes de Media General",
-    "manager": "José Velásquez (Formación Permanente). Yulimar González (GHC)",
-    "date": "22/03/2022",
-    "observations": "Estudiantes clasificados:",
-    "type": "RETOS MG",
-    "participants": 23,
-    "status": "canceled"
   },
   {
     "subject": "Reto por Amor y Lealtad a la Patria (GHC y  Soberanía)",

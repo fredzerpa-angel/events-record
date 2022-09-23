@@ -1,6 +1,6 @@
 import { Link as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { Home as HomeIcon, CalendarMonth as CalendarMonthIcon, PersonAdd as PersonAddIcon} from '@mui/icons-material';
+import { Home as HomeIcon, CalendarMonth as CalendarMonthIcon} from '@mui/icons-material';
 
 const items = [
   {
@@ -12,11 +12,6 @@ const items = [
     href: '/events',
     icon: CalendarMonthIcon,
     label: 'Eventos'
-  },
-  {
-    href: '/dashboard/settings',
-    icon: PersonAddIcon,
-    label: 'Registrar Alumno'
   }
 ];
 

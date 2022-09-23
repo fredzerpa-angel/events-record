@@ -3,7 +3,6 @@ import { Layout } from "./components/layout";
 import { NotFound } from "./pages/not-found";
 import { Events } from "./pages/events";
 import { Reports } from "./pages/reports";
-import { Settings } from "./pages/settings";
 
 export const routes = [
   {
@@ -17,10 +16,6 @@ export const routes = [
       {
         path: "",
         element: <Reports />,
-      },
-      {
-        path: "settings",
-        element: <Settings />,
       },
       {
         path: "*",
