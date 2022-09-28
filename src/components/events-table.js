@@ -9,12 +9,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Scrollbar } from './scrollbar';
 
 export const EventsTable = ({ data }) => {
-
   return (
     <div>
       <Scrollbar>
@@ -42,21 +41,18 @@ export const EventsTable = ({ data }) => {
                 <TableRow key={id} hover>
                   <TableCell variant='body' align='center'>
                     <Link
-                      color="inherit"
+                      color='inherit'
                       component={RouterLink}
-                      to="#"
-                      underline="none"
-                      variant="subtitle2"
+                      to='#'
+                      underline='none'
+                      variant='subtitle2'
                     >
                       {event.project}
                     </Link>
                   </TableCell>
                   <TableCell variant='body' align='center'>
                     <Box>
-                      <Typography
-                        color="inherit"
-                        variant="inherit"
-                      >
+                      <Typography color='inherit' variant='inherit'>
                         {event.date}
                       </Typography>
                     </Box>
@@ -68,7 +64,13 @@ export const EventsTable = ({ data }) => {
                     <Chip
                       label={event.status.toUpperCase()}
                       size='medium'
-                      color={event.status === 'completed' ? 'success' : event.status === 'pending' ? 'warning' : 'error'}
+                      color={
+                        event.status === 'completed'
+                          ? 'success'
+                          : event.status === 'pending'
+                          ? 'warning'
+                          : 'error'
+                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -82,5 +84,5 @@ export const EventsTable = ({ data }) => {
 };
 
 EventsTable.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
 };

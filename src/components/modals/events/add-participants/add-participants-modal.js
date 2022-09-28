@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import { AddParticipantsForm } from './forms/add-participants-form';
+import { AddParticipantsForm } from './add-participants-form';
 import AddIcon from '@mui/icons-material/Add';
 
 const style = {
@@ -24,7 +24,7 @@ export default function AddParticipantsModal() {
       <Button
         color='primary'
         size='large'
-        variant='contained'
+        variant='outlined'
         startIcon={<AddIcon />}
         onClick={handleOpen}
       >
@@ -43,7 +43,7 @@ export default function AddParticipantsModal() {
       >
         <Fade in={open}>
           <Container maxWidth='sm' sx={style}>
-            <AddParticipantsForm />
+            <AddParticipantsForm closeModal={handleClose}/>
           </Container>
         </Fade>
       </Modal>

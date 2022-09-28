@@ -11,7 +11,7 @@ import {
 import { EventsFilter } from '../components/events/events-filter';
 import { EventsTable } from '../components/events-table';
 import { orders } from '../__mocks__/orders';
-import AddParticipantsModal from '../components/modals/add-participants-modal';
+import AddParticipantsModal from '../components/modals/events/add-participants/add-participants-modal';
 
 export const Events = () => {
   const [mode, setMode] = useState('table');

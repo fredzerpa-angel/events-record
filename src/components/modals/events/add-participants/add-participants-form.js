@@ -6,13 +6,13 @@ import {
   Typography,
   Autocomplete,
 } from '@mui/material';
-
-// TODO: Change this to use Events from the DB
-import { MOCKUP_EVENTS } from '../../../__mocks__/events';
-import {MOCKUP_STUDENTS} from '../../../__mocks__/students';
 import { AutocompleteCheckboxes } from './autocomplete-checkboxes';
 
-export const AddParticipantsForm = () => {
+// TODO: Change this to use Events from the DB
+import { MOCKUP_EVENTS } from '../../../../__mocks__/events';
+import { MOCKUP_STUDENTS } from '../../../../__mocks__/students';
+
+export const AddParticipantsForm = ({closeModal}) => {
   return (
     <>
       <Card variant='outlined' sx={{ p: 3 }}>
@@ -35,21 +35,34 @@ export const AddParticipantsForm = () => {
             {/* Participants Input */}
             <Grid item xs={12}>
               <AutocompleteCheckboxes
-                options={MOCKUP_STUDENTS.sort((a,b) => -b.grade.localeCompare(a.grade))}
+                options={MOCKUP_STUDENTS.sort(
+                  (a, b) => -b.grade.localeCompare(a.grade)
+                )}
                 getOptionLabel={option => option.fullname}
                 groupBy={option => option.grade}
                 label='fullname'
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                color='primary'
-                size='large'
-                type='submit'
-                variant='contained'
-              >
-                Agregar
-              </Button>
+            <Grid item container xs={12} justifyContent='center'>
+              <Grid item container justifyContent='center' xs={5}>
+                <Button
+                  size='large'
+                  onClick={closeModal}
+                  variant='text'
+                >
+                  Cancelar
+                </Button>
+              </Grid>
+              <Grid item container justifyContent='center' xs={5}>
+                <Button
+                  color='primary'
+                  size='large'
+                  type='submit'
+                  variant='contained'
+                >
+                  Agregar
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </form>
