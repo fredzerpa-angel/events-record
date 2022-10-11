@@ -219,7 +219,7 @@ const columnsConfig = [
     field: 'startDate',
     headerName: 'Fecha de Inicio',
     type: 'date',
-    width: 200,
+    width: 180,
     valueFormatter: params => params.value ?? null,
     // renderCell: renderCellExpand,
   },
@@ -227,7 +227,7 @@ const columnsConfig = [
     field: 'endDate',
     headerName: 'Fecha de Culminacion',
     type: 'date',
-    width: 200,
+    width: 180,
     valueFormatter: params => params.value ?? null,
     // renderCell: renderCellExpand,
   },
@@ -276,7 +276,7 @@ export default function EventsTable({ visibleFields, ...props }) {
       autoHeight
       disableColumnFilter
       disableDensitySelector
-      disableExtendRowFullWidth
+      // disableExtendRowFullWidth
       isCellEditable={params => false}
       components={{ Toolbar: GridToolbar }}
       componentsProps={{
@@ -288,7 +288,6 @@ export default function EventsTable({ visibleFields, ...props }) {
       pageSize={pageSize}
       onPageSizeChange={newPageSize => setPageSize(newPageSize)}
       rowsPerPageOptions={[10, 25, 50]}
-      pagination
       localeText={DATA_GRID_IN_SPANISH}
     />
   );
