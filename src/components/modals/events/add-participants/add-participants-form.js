@@ -6,7 +6,7 @@ import {
   Typography,
   Autocomplete,
 } from '@mui/material';
-import { AutocompleteCheckboxes } from './autocomplete-checkboxes';
+import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
 
 // TODO: Change this to use Events from the DB
 import { MOCKUP_EVENTS } from '../../../../__mocks__/events';
@@ -26,7 +26,7 @@ export const AddParticipantsForm = ({closeModal}) => {
               <Autocomplete
                 disablePortal
                 options={MOCKUP_EVENTS}
-                getOptionLabel={option => option.project}
+                getOptionLabel={event => event.name}
                 renderInput={params => (
                   <TextField {...params} label='Eventos' />
                 )}
@@ -34,13 +34,14 @@ export const AddParticipantsForm = ({closeModal}) => {
             </Grid>
             {/* Participants Input */}
             <Grid item xs={12}>
-              <AutocompleteCheckboxes
+              <AutocompleteCheckbox
                 options={MOCKUP_STUDENTS.sort(
                   (a, b) => -b.grade.localeCompare(a.grade)
                 )}
-                getOptionLabel={option => option.fullname}
-                groupBy={option => option.grade}
-                label='fullname'
+                getOptionLabel={student => student.fullname}
+                groupBy={student => student.grade}
+                label='Participants'
+                optionsByLabel='fullname'
               />
             </Grid>
             <Grid item container xs={12} justifyContent='center'>

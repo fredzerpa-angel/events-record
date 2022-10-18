@@ -4,35 +4,46 @@ import Container from '@mui/material/Container';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import { AddParticipantsForm } from './form/add-participants-form';
 import AddIcon from '@mui/icons-material/Add';
+import EventIcon from '@mui/icons-material/Today';
+import { CreateEventsForm } from './create-events-form';
+import { IconButton, styled, useMediaQuery, useTheme } from '@mui/material';
+import { Scrollbar } from '../../../scrollbar';
 
-const style = {
+const ModalContent = styled(Container)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-};
 
-export default function AddParticipantsModal() {
+  [theme.breakpoints.down('sm')]: {
+    maxHeight: '100vh',
+    overflow: 'auto',
+  },
+}));
+
+export default function CreateEventsModal(props) {
   const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <div>
+    <>
       <Button
+        {...props}
         color='primary'
         size='large'
         variant='outlined'
         startIcon={<AddIcon />}
         onClick={handleOpen}
       >
-        Evento
+        {isMobile ? <EventIcon /> : 'Eventos'}
       </Button>
       <Modal
-        aria-labelledby='modal-title'
-        aria-describedby='modal-body'
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -42,11 +53,13 @@ export default function AddParticipantsModal() {
         }}
       >
         <Fade in={open}>
-          <Container maxWidth='sm' sx={style}>
-            <AddParticipantsForm />
-          </Container>
+          <ModalContent maxWidth='sm' disableGutters>
+            <Scrollbar style={{ maxHeight: '90vh' }}>
+              <CreateEventsForm closeModal={handleClose} />
+            </Scrollbar>
+          </ModalContent>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }

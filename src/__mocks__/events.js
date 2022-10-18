@@ -23,7 +23,7 @@ export const MOCKUP_EVENTS = [
     startDate: '09/28/2022',
     endDate: '10/05/2022',
     observations: 'Culminado sin problemas.',
-    status: 'Incompleto',
+    status: 'En Progreso',
   },
   {
     id: 3,

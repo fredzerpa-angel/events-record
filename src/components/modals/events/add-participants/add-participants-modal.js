@@ -6,6 +6,8 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import { AddParticipantsForm } from './add-participants-form';
 import AddIcon from '@mui/icons-material/Add';
+import ParticipantsAddIcon from '@mui/icons-material/Groups';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -14,25 +16,27 @@ const style = {
   transform: 'translate(-50%, -50%)',
 };
 
-export default function AddParticipantsModal() {
+export default function AddParticipantsModal(props) {
   const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <div>
+    <>
       <Button
+        {...props}
         color='primary'
         size='large'
-        variant='outlined'
+        variant='contained'
         startIcon={<AddIcon />}
         onClick={handleOpen}
       >
-        Participante
+        { isMobile ? <ParticipantsAddIcon /> : 'Participantes'}
       </Button>
       <Modal
-        aria-labelledby='modal-title'
-        aria-describedby='modal-body'
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -42,11 +46,11 @@ export default function AddParticipantsModal() {
         }}
       >
         <Fade in={open}>
-          <Container maxWidth='sm' sx={style}>
+          <Container maxWidth='sm' disableGutters sx={style}>
             <AddParticipantsForm closeModal={handleClose}/>
           </Container>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }
