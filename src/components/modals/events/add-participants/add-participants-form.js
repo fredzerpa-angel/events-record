@@ -1,4 +1,4 @@
-  import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,21 +6,16 @@ import {
   TextField,
   Typography,
   Autocomplete,
+  CircularProgress,
 } from '@mui/material';
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
+import { useEvents } from '../../../../hooks/events';
+import { useStudents } from '../../../../hooks/students';
 
-export const AddParticipantsForm = ({closeModal}) => {
-  const [events, setEvents] = useState([]); 
-  const [students, setStudents] = useState([]); 
+export const AddParticipantsForm = ({ closeModal }) => {
+  const { events, isLoading: loadingEvents } = useEvents();
+  const { students, isLoading: loadingStudents } = useStudents();
 
-  useEffect(() => {
-    const events = JSON.parse(window.localStorage.getItem('events'));
-    const students = JSON.parse(window.localStorage.getItem('students'));
-    
-    setEvents(events);
-    setStudents(students);
-  }, [])
-  
   return (
     <>
       <Card variant='outlined' sx={{ p: 3 }}>
@@ -34,9 +29,24 @@ export const AddParticipantsForm = ({closeModal}) => {
               <Autocomplete
                 disablePortal
                 options={events}
+                loading={loadingEvents}
                 getOptionLabel={event => event.name}
                 renderInput={params => (
-                  <TextField {...params} label='Eventos' />
+                  <TextField
+                    {...params}
+                    label='Eventos'
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {loadingEvents ? (
+                            <CircularProgress color='inherit' size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </>
+                      ),
+                    }}
+                  />
                 )}
               />
             </Grid>
@@ -50,15 +60,12 @@ export const AddParticipantsForm = ({closeModal}) => {
                 groupBy={student => student.grade}
                 label='Participants'
                 optionsByLabel='fullname'
+                loading={loadingStudents}
               />
             </Grid>
             <Grid item container xs={12} justifyContent='center'>
               <Grid item container justifyContent='center' xs={5}>
-                <Button
-                  size='large'
-                  onClick={closeModal}
-                  variant='text'
-                >
+                <Button size='large' onClick={closeModal} variant='text'>
                   Cancelar
                 </Button>
               </Grid>

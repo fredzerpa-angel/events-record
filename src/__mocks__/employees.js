@@ -1,4 +1,4 @@
-export const MOCKUP_TEACHERS = [
+export const MOCKUP_EMPLOYEES = [
   {
     id: 1,
     fullname: 'Stafani Angliss',

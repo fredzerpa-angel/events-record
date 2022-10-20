@@ -6,7 +6,7 @@ export const useEvents = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
-  const getStudents = useCallback(async () => {
+  const getEvents = useCallback(async () => {
     try {
       const events = await fetchEvents();
       setEvents(events);
@@ -19,8 +19,8 @@ export const useEvents = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getStudents();
-  }, [getStudents]);
+    getEvents();
+  }, [getEvents]);
 
   return { events, isLoading, errors };
 };

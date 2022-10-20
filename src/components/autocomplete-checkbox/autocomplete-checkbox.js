@@ -3,8 +3,15 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { CircularProgress } from '@mui/material';
 
-export const AutocompleteCheckbox = ({ label, optionsByLabel, required, ...props }) => {
+export const AutocompleteCheckbox = ({
+  label,
+  optionsByLabel,
+  loading,
+  required,
+  ...props
+}) => {
   return (
     <Autocomplete
       onChange={(oldValue, newValue) => {
@@ -24,7 +31,24 @@ export const AutocompleteCheckbox = ({ label, optionsByLabel, required, ...props
           {option[optionsByLabel]}
         </li>
       )}
-      renderInput={params => <TextField required={required} {...params} label={label} />}
+      renderInput={params => (
+        <TextField
+          required={required}
+          {...params}
+          label={label}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <>
+                {loading ? (
+                  <CircularProgress color='inherit' size={20} />
+                ) : null}
+                {params.InputProps.endAdornment}
+              </>
+            ),
+          }}
+        />
+      )}
     />
   );
 };
