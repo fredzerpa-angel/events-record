@@ -11,35 +11,62 @@ import {
   MenuItem,
   InputLabel,
 } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 // TODO: Change this to use Events from the DB
 import { MOCKUP_TEACHERS } from '../../../../__mocks__/teachers';
 import { MOCKUP_EVENTS } from '../../../../__mocks__/events';
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
 
-export const CreateEventsForm = ({ closeModal }) => {  
-  const handleSubmit = e => {
-    e.preventDefault();
+export const CreateEventsForm = ({ closeModal }) => {
+  const { register, setValue, handleSubmit } = useForm({
+    defaultValues: {
+      startDate: '',
+      endDate: '',
+      organization: '',
+      status: '',
+      eventType: '',
+      eventName: '',
+      overseers: [],
+      goal: null,
+      observations: null,
+    },
+  });
+
+  const onSubmit = data => {
+    console.log(data);
+
+    // TODO: Add new event to DB
+
+    // Get previous events value
+    const events = JSON.parse(window.localStorage.getItem('events'));
+    events.push(data)
+    
+    window.localStorage.setItem('events', JSON.stringify(events));
   };
 
   return (
     <>
-      <Card 
-        variant='outlined' 
-        sx={{ 
-          p: 3, 
+      <Card
+        variant='outlined'
+        sx={{
+          p: 3,
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
           Registro de participante
         </Typography>
-        <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component='form'
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                {...register('startDate', {required: true})}
                 autoComplete='startDate'
-                name='startDate'
-                required
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
@@ -49,34 +76,32 @@ export const CreateEventsForm = ({ closeModal }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                required
+                {...register('endDate', {required: true})}
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
                 id='endDate'
                 label='Fecha de Culminacion'
-                name='endDate'
                 autoComplete='endDate'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                {...register('organization', {required: true})}
                 autoComplete='organization'
-                name='organization'
-                required
                 fullWidth
                 id='organization'
                 label='Organizacion'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl required fullWidth>
+              <FormControl fullWidth>
                 <InputLabel id='status-label'>Status</InputLabel>
                 <Select
+                  {...register('status', {required: true})}
                   labelId='status-label'
                   id='status'
                   label='Status'
-                  name='status'
                   defaultValue='pending'
                 >
                   <MenuItem value='completed'>Completado</MenuItem>
@@ -92,24 +117,27 @@ export const CreateEventsForm = ({ closeModal }) => {
                 freeSolo
                 options={[...new Set(MOCKUP_EVENTS.map(event => event.type))]}
                 renderInput={params => (
-                  <TextField required {...params} label='Tipo de Evento' />
+                  <TextField
+                    {...params}
+                    {...register('eventType', {required: true})}
+                    label='Tipo de Evento'
+                  />
                 )}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
+                {...register('eventName', {required: true})}
                 fullWidth
                 id='event-name'
                 label='Nombre del Evento'
-                name='event-name'
-                autoComplete='event-name'
+                autoComplete='eventName'
               />
             </Grid>
             <Grid item xs={12}>
               <AutocompleteCheckbox
-                required
                 options={MOCKUP_TEACHERS}
+                onChange={(oldValue, newValue) => setValue('overseers', newValue)}
                 getOptionLabel={teacher => teacher.fullname}
                 optionsByLabel='fullname'
                 label='Responsables'
@@ -117,23 +145,22 @@ export const CreateEventsForm = ({ closeModal }) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
+                {...register('goal')}
                 fullWidth
-                name='goal'
                 label='Objetivo'
                 multiline
-                rows={4}                
+                rows={4}
                 id='goal'
                 autoComplete='goal'
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register('observations')}
                 fullWidth
-                name='observations'
                 label='Observaciones'
                 multiline
-                rows={4}                
+                rows={4}
                 id='observations'
                 autoComplete='observations'
               />

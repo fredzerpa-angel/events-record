@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Card, Container, Grid, Typography } from '@mui/material';
+import { Box, Card, Container, Typography } from '@mui/material';
 import CreateEventsModal from '../components/modals/events/create-events/create-events-modal';
 import AddParticipantsModal from '../components/modals/events/add-participants/add-participants-modal';
 import EventsTable from '../components/events/events-table';
-import { MOCKUP_EVENTS } from '../__mocks__/events';
+import { useEvents } from '../hooks/events';
 
 export const Events = () => {
-  const [tableRows, setTableRows] = useState([]);
-
-  useEffect(() => {
-    // TODO: Load Events
-    setTableRows(MOCKUP_EVENTS);
-  }, []);
-
+  const { events, isLoading, errors } = useEvents();
+  
   return (
     <>
       <Helmet>
@@ -40,7 +34,6 @@ export const Events = () => {
             <Box
               sx={{
                 display: 'flex',
-                
               }}
             >
               <CreateEventsModal />
@@ -49,6 +42,7 @@ export const Events = () => {
           </Box>
           <Card>
             <EventsTable
+              loading={isLoading}
               visibleFields={[
                 'type',
                 'name',
@@ -61,7 +55,7 @@ export const Events = () => {
                 'observations',
                 'status',
               ]}
-              rows={tableRows}
+              rows={events}
             />
           </Card>
         </Container>

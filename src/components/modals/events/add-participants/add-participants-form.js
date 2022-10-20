@@ -1,3 +1,4 @@
+  import { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -8,11 +9,18 @@ import {
 } from '@mui/material';
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
 
-// TODO: Change this to use Events from the DB
-import { MOCKUP_EVENTS } from '../../../../__mocks__/events';
-import { MOCKUP_STUDENTS } from '../../../../__mocks__/students';
-
 export const AddParticipantsForm = ({closeModal}) => {
+  const [events, setEvents] = useState([]); 
+  const [students, setStudents] = useState([]); 
+
+  useEffect(() => {
+    const events = JSON.parse(window.localStorage.getItem('events'));
+    const students = JSON.parse(window.localStorage.getItem('students'));
+    
+    setEvents(events);
+    setStudents(students);
+  }, [])
+  
   return (
     <>
       <Card variant='outlined' sx={{ p: 3 }}>
@@ -25,7 +33,7 @@ export const AddParticipantsForm = ({closeModal}) => {
             <Grid item xs={12}>
               <Autocomplete
                 disablePortal
-                options={MOCKUP_EVENTS}
+                options={events}
                 getOptionLabel={event => event.name}
                 renderInput={params => (
                   <TextField {...params} label='Eventos' />
@@ -35,7 +43,7 @@ export const AddParticipantsForm = ({closeModal}) => {
             {/* Participants Input */}
             <Grid item xs={12}>
               <AutocompleteCheckbox
-                options={MOCKUP_STUDENTS.sort(
+                options={students.sort(
                   (a, b) => -b.grade.localeCompare(a.grade)
                 )}
                 getOptionLabel={student => student.fullname}

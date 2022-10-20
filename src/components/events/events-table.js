@@ -276,7 +276,6 @@ export default function EventsTable({ visibleFields, ...props }) {
       autoHeight
       disableColumnFilter
       disableDensitySelector
-      // disableExtendRowFullWidth
       isCellEditable={params => false}
       components={{ Toolbar: GridToolbar }}
       componentsProps={{

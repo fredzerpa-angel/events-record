@@ -4,23 +4,20 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
-const checkedIcon = <CheckBoxIcon fontSize='small' />;
-
 export const AutocompleteCheckbox = ({ label, optionsByLabel, required, ...props }) => {
   return (
     <Autocomplete
-      {...props}
-      multiple
-      onChange={(event, newValue) => {
+      onChange={(oldValue, newValue) => {
         console.log(newValue);
       }}
+      {...props}
+      multiple
       disableCloseOnSelect
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
+      renderOption={(optionProps, option, { selected }) => (
+        <li {...optionProps}>
           <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
+            icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+            checkedIcon={<CheckBoxIcon fontSize='small' />}
             style={{ marginRight: 8 }}
             checked={selected}
           />
