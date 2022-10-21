@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 import { fetchEmployees } from './requests';
 
 export const useEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
-
+  
   const getEmployees = useCallback(async () => {
     try {
       const employees = await fetchEmployees();

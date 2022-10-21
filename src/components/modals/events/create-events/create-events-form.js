@@ -20,33 +20,34 @@ import { useEvents } from '../../../../hooks/events';
 import { useEmployees } from '../../../../hooks/employees';
 
 export const CreateEventsForm = ({ closeModal }) => {
-  const { events, isLoading: loadingEvents } = useEvents();
+  const { events, addEvent, isLoading: loadingEvents } = useEvents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
-  const { register, setValue, handleSubmit } = useForm({
+  const { register, getValues, setValue, handleSubmit, watch } = useForm({
     defaultValues: {
       startDate: '',
       endDate: '',
       organization: '',
       status: '',
-      eventType: '',
-      eventName: '',
+      type: '',
+      name: '',
       overseers: [],
       goal: null,
       observations: null,
     },
   });
 
-  const onSubmit = data => {
-    console.log(data);
+  const uniqueEventsType = [...new Set(events.map(event => event.type))];
+  const handleEventTypeChange = e => {
+    const inputEventTypeValue = getValues('type');
+    const existsEventType = uniqueEventsType.find(
+      type => type.toLowerCase() === inputEventTypeValue
+    );
 
-    // TODO: Add new event to DB
-
-    // Get previous events value
-    const events = JSON.parse(window.localStorage.getItem('events'));
-    events.push(data);
-
-    window.localStorage.setItem('events', JSON.stringify(events));
+    if (existsEventType) setValue('type', existsEventType);
   };
+
+  const onSubmit = (data, e) => addEvent(data);
+  const onError = (errors, e) => console.error(errors, e);
 
   return (
     <>
@@ -57,18 +58,21 @@ export const CreateEventsForm = ({ closeModal }) => {
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
-          Registro de participante
+          Registro de Eventos
         </Typography>
         <Box
           component='form'
           noValidate
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit, onError)}
           sx={{ mt: 3 }}
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('startDate', { required: true })}
+                {...register('startDate', {
+                  required: true,
+                  validate: value => !!Date.parse(value),
+                })}
                 autoComplete='startDate'
                 fullWidth
                 type='date'
@@ -79,7 +83,10 @@ export const CreateEventsForm = ({ closeModal }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('endDate', { required: true })}
+                {...register('endDate', {
+                  required: true,
+                  validate: value => !!Date.parse(value),
+                })}
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
@@ -99,18 +106,18 @@ export const CreateEventsForm = ({ closeModal }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel id='status-label'>Status</InputLabel>
+                <InputLabel id='status-label'>Estatus</InputLabel>
                 <Select
                   {...register('status', { required: true })}
                   labelId='status-label'
                   id='status'
-                  label='Status'
-                  defaultValue='pending'
+                  label='Estatus'
+                  defaultValue='Pendiente'
                 >
-                  <MenuItem value='completed'>Completado</MenuItem>
-                  <MenuItem value='ongoing'>En Progreso</MenuItem>
-                  <MenuItem value='pending'>Pendiente</MenuItem>
-                  <MenuItem value='canceled'>Cancelado</MenuItem>
+                  <MenuItem value='Completado'>Completado</MenuItem>
+                  <MenuItem value='En Progreso'>En Progreso</MenuItem>
+                  <MenuItem value='Pendiente'>Pendiente</MenuItem>
+                  <MenuItem value='Cancelado'>Cancelado</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -119,11 +126,12 @@ export const CreateEventsForm = ({ closeModal }) => {
                 id='event-type'
                 freeSolo
                 loading={loadingEvents}
-                options={[...new Set(events.map(event => event.type))]}
+                options={uniqueEventsType}
+                onClose={handleEventTypeChange}
                 renderInput={params => (
                   <TextField
                     {...params}
-                    {...register('eventType', { required: true })}
+                    {...register('type', { required: true })}
                     label='Tipo de Evento'
                     InputProps={{
                       ...params.InputProps,
@@ -142,11 +150,11 @@ export const CreateEventsForm = ({ closeModal }) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                {...register('eventName', { required: true })}
+                {...register('name', { required: true })}
                 fullWidth
                 id='event-name'
                 label='Nombre del Evento'
-                autoComplete='eventName'
+                autoComplete='name'
               />
             </Grid>
             <Grid item xs={12}>

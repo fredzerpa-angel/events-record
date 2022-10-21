@@ -46,3 +46,12 @@ export const fetchEvents = async () => {
     throw new Error(err);
   }
 };
+
+export const addNewEvent = async (event) => {
+  try {
+    // TODO
+    return {ok: true};
+  } catch (err) {
+    throw new Error(err)
+  }
+}

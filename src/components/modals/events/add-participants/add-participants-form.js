@@ -58,7 +58,7 @@ export const AddParticipantsForm = ({ closeModal }) => {
                 )}
                 getOptionLabel={student => student.fullname}
                 groupBy={student => student.grade}
-                label='Participants'
+                label='Participantes'
                 optionsByLabel='fullname'
                 loading={loadingStudents}
               />

@@ -192,11 +192,9 @@ const columnsConfig = [
     headerName: 'Responsables',
     type: 'string',
     width: 160,
-    valueGetter: params =>
-      params.value[0] +
-      (params.value.length > 1 ? ` +${params.value.length - 1}` : ''),
+    valueGetter: params => params.value.join(', '),
     valueFormatter: params => params.value ?? 'N/A',
-    // renderCell: renderCellExpand,
+    renderCell: renderCellExpand,
   },
   {
     field: 'goal',
@@ -241,7 +239,7 @@ const columnsConfig = [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: 'Estatus',
     type: 'string',
     width: 150,
     valueFormatter: params => params.value ?? 'N/A',
