@@ -11,26 +11,24 @@ import {
 import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/reports/summary-item';
 import EventsTable from '../components/events/events-table';
-import { useEvents } from '../hooks/events';
+import useEvents from '../hooks/useEvents';
 import { useState, useEffect } from 'react';
 
 export const Reports = () => {
   const [stats, setStats] = useState([]);
   const { events, isLoading } = useEvents();
 
-  console.log({events, isLoading});
-
   useEffect(() => {
     const stats = [
       {
-        content: String(events.length),
+        content: String(events?.length),
         icon: EmojiEvents,
         label: 'Eventos',
       },
       {
         content: String(
           events.reduce(
-            (total, { participants }) => total + participants.length,
+            (total, { participants }) => total + participants?.length,
             0
           )
         ),

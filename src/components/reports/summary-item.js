@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography } from '@mui/material';
 
 export const SummaryItem = (props) => {
@@ -52,10 +51,4 @@ export const SummaryItem = (props) => {
       </Box>
     </Card>
   );
-};
-
-SummaryItem.propTypes = {
-  content: PropTypes.string.isRequired,
-  icon: PropTypes.elementType,
-  label: PropTypes.string.isRequired
 };

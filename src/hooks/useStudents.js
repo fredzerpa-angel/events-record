@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { fetchStudents } from './requests';
 
-export const useStudents = () => {
+const useStudents = () => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -24,3 +24,5 @@ export const useStudents = () => {
 
   return { students, isLoading, errors };
 };
+
+export default useStudents;

@@ -14,9 +14,6 @@ export const AutocompleteCheckbox = ({
 }) => {
   return (
     <Autocomplete
-      onChange={(oldValue, newValue) => {
-        console.log(newValue);
-      }}
       {...props}
       multiple
       disableCloseOnSelect

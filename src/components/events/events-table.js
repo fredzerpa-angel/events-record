@@ -1,9 +1,10 @@
-import * as React from 'react';
+import {useState, useEffect, useRef, memo} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DateTime } from 'luxon';
 
 function isOverflown(element) {
   return (
@@ -12,14 +13,14 @@ function isOverflown(element) {
   );
 }
 
-const GridCellExpand = React.memo(props => {
+const GridCellExpand = memo(props => {
   const { width, value } = props;
-  const wrapper = React.useRef(null);
-  const cellDiv = React.useRef(null);
-  const cellValue = React.useRef(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [showFullCell, setShowFullCell] = React.useState(false);
-  const [showPopper, setShowPopper] = React.useState(false);
+  const wrapper = useRef(null);
+  const cellDiv = useRef(null);
+  const cellValue = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [showFullCell, setShowFullCell] = useState(false);
+  const [showPopper, setShowPopper] = useState(false);
 
   const handleMouseEnter = () => {
     const isCurrentlyOverflown = isOverflown(cellValue.current);
@@ -32,7 +33,7 @@ const GridCellExpand = React.memo(props => {
     setShowFullCell(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!showFullCell) {
       return undefined;
     }
@@ -105,7 +106,7 @@ const GridCellExpand = React.memo(props => {
   );
 });
 
-function renderCellExpand(params) {
+const renderCellExpand = (params) => {
   return (
     <GridCellExpand
       value={params.value || ''}
@@ -160,7 +161,7 @@ const columnsConfig = [
     headerName: 'ID',
     type: 'number',
     width: 100,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     // renderCell: renderCellExpand,
   },
   {
@@ -168,7 +169,7 @@ const columnsConfig = [
     headerName: 'Tipo',
     type: 'string',
     width: 200,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -176,7 +177,7 @@ const columnsConfig = [
     headerName: 'Proyecto',
     type: 'string',
     width: 200,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -184,7 +185,7 @@ const columnsConfig = [
     headerName: 'Organizacion',
     type: 'string',
     width: 150,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -192,8 +193,8 @@ const columnsConfig = [
     headerName: 'Responsables',
     type: 'string',
     width: 160,
-    valueGetter: params => params.value.join(', '),
-    valueFormatter: params => params.value ?? 'N/A',
+    valueGetter: params => params.value?.map(overseer => overseer.fullname).join(', '),
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -201,7 +202,7 @@ const columnsConfig = [
     headerName: 'Objetivo',
     type: 'string',
     width: 200,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -209,8 +210,8 @@ const columnsConfig = [
     headerName: 'Participantes',
     type: 'number',
     width: 120,
-    valueGetter: params => params.value.length,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueGetter: params => params.value?.length,
+    valueFormatter: params => params.value ?? 0,
     // renderCell: renderCellExpand,
   },
   {
@@ -219,6 +220,7 @@ const columnsConfig = [
     type: 'date',
     width: 180,
     valueFormatter: params => params.value ?? null,
+    valueGetter: params => DateTime.fromISO(params.value).toLocaleString(),
     // renderCell: renderCellExpand,
   },
   {
@@ -227,6 +229,7 @@ const columnsConfig = [
     type: 'date',
     width: 180,
     valueFormatter: params => params.value ?? null,
+    valueGetter: params => DateTime.fromISO(params.value).toLocaleString(),
     // renderCell: renderCellExpand,
   },
   {
@@ -234,7 +237,7 @@ const columnsConfig = [
     headerName: 'Observaciones',
     type: 'string',
     width: 200,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
   {
@@ -242,13 +245,13 @@ const columnsConfig = [
     headerName: 'Estatus',
     type: 'string',
     width: 150,
-    valueFormatter: params => params.value ?? 'N/A',
+    valueFormatter: params => params.value ?? '',
     // renderCell: renderCellExpand,
   },
 ];
 
 export default function EventsTable({ visibleFields, ...props }) {
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = useState(10);
 
   const initialState = columnsConfig.reduce((state, column) => {
     // Hide the columns only at mounting time

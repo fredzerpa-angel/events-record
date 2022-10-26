@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {
   Button,
   Card,
@@ -16,13 +17,15 @@ import { useForm } from 'react-hook-form';
 
 // TODO: Change this to use Events from the DB
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
-import { useEvents } from '../../../../hooks/events';
-import { useEmployees } from '../../../../hooks/employees';
+import useEvents from '../../../../hooks/useEvents';
+import useEmployees from '../../../../hooks/useEmployees';
+import { LoadingButton } from '@mui/lab';
 
-export const CreateEventsForm = ({ closeModal }) => {
-  const { events, addEvent, isLoading: loadingEvents } = useEvents();
+const CreateEventsForm = ({ createEvent, closeModal }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { events, isLoading: loadingEvents } = useEvents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
-  const { register, getValues, setValue, handleSubmit, watch } = useForm({
+  const { register, getValues, setValue, handleSubmit } = useForm({
     defaultValues: {
       startDate: '',
       endDate: '',
@@ -46,7 +49,14 @@ export const CreateEventsForm = ({ closeModal }) => {
     if (existsEventType) setValue('type', existsEventType);
   };
 
-  const onSubmit = (data, e) => addEvent(data);
+  const onSubmit = async (data, e) => {
+    setIsSubmitting(true);
+    // TODO: Open modal with eaither succes or error message
+    const response = await createEvent(data);
+    setIsSubmitting(false);
+    closeModal();
+  }
+
   const onError = (errors, e) => console.error(errors, e);
 
   return (
@@ -195,19 +205,20 @@ export const CreateEventsForm = ({ closeModal }) => {
             {/* Buttons */}
             <Grid item container xs={12} justifyContent='center'>
               <Grid item container justifyContent='center' xs={5}>
-                <Button size='large' onClick={closeModal} variant='text'>
+                <Button size='large' onClick={closeModal} variant='text' disabled={isSubmitting}>
                   Cancelar
                 </Button>
               </Grid>
               <Grid item container justifyContent='center' xs={5}>
-                <Button
+                <LoadingButton
                   color='primary'
                   size='large'
                   type='submit'
                   variant='contained'
+                  loading={isSubmitting}
                 >
                   Crear Evento
-                </Button>
+                </LoadingButton>
               </Grid>
             </Grid>
           </Grid>
@@ -216,3 +227,5 @@ export const CreateEventsForm = ({ closeModal }) => {
     </>
   );
 };
+
+export default CreateEventsForm;

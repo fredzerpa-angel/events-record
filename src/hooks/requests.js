@@ -6,10 +6,15 @@ export const fetchStudents = async () => {
   try {
     const students = await new Promise((resolve, reject) => {
       setTimeout(() => {
-        const students = MOCKUP_STUDENTS;
-        resolve(students);
+        const savedStudents = JSON.parse(window.localStorage.getItem('students'));
+        if (savedStudents?.length) return resolve(savedStudents);
+
+
+        const initialStudents = MOCKUP_STUDENTS;
+        window.localStorage.setItem('students', JSON.stringify(initialStudents));
+        return resolve(initialStudents);
       }, 2000);
-    })
+    });
 
     return students;
   } catch (err) {
@@ -21,10 +26,15 @@ export const fetchEmployees = async () => {
   try {
     const employees = await new Promise((resolve, reject) => {
       setTimeout(() => {
-        const employees = MOCKUP_EMPLOYEES;
-        resolve(employees);
+        const savedEmployees = JSON.parse(window.localStorage.getItem('employees'));
+        if (savedEmployees?.length) return resolve(savedEmployees);
+
+
+        const initialEmployees = MOCKUP_EMPLOYEES;
+        window.localStorage.setItem('employees', JSON.stringify(initialEmployees));
+        return resolve(initialEmployees);
       }, 2000);
-    })
+    });
 
     return employees;
   } catch (err) {
@@ -36,10 +46,14 @@ export const fetchEvents = async () => {
   try {
     const events = await new Promise((resolve, reject) => {
       setTimeout(() => {
-        const events = MOCKUP_EVENTS;
-        resolve(events);
+        const savedEvents = JSON.parse(window.localStorage.getItem('events'));
+        if (savedEvents?.length) return resolve(savedEvents);
+
+        const initialEvents = MOCKUP_EVENTS;
+        window.localStorage.setItem('events', JSON.stringify(initialEvents));
+        return resolve(initialEvents);
       }, 2000);
-    })
+    });
 
     return events;
   } catch (err) {
@@ -47,11 +61,20 @@ export const fetchEvents = async () => {
   }
 };
 
-export const addNewEvent = async (event) => {
+export const addNewEvent = async event => {
   try {
     // TODO
-    return {ok: true};
+    const response = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const events = JSON.parse(window.localStorage.getItem('events'));
+        events.push({ id: events.at(-1).id + 1, ...event });
+        window.localStorage.setItem('events', JSON.stringify(events));
+
+        return resolve({ ok: true });
+      }, 2000)
+    });
+    return response;
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err);
   }
-}
+};

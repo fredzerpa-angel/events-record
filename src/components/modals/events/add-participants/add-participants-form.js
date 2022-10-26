@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -9,8 +8,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
-import { useEvents } from '../../../../hooks/events';
-import { useStudents } from '../../../../hooks/students';
+import useEvents from '../../../../hooks/useEvents';
+import useStudents from '../../../../hooks/useStudents';
 
 export const AddParticipantsForm = ({ closeModal }) => {
   const { events, isLoading: loadingEvents } = useEvents();

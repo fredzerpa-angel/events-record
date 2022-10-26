@@ -3,10 +3,10 @@ import { Box, Card, Container, Typography } from '@mui/material';
 import CreateEventsModal from '../components/modals/events/create-events/create-events-modal';
 import AddParticipantsModal from '../components/modals/events/add-participants/add-participants-modal';
 import EventsTable from '../components/events/events-table';
-import { useEvents } from '../hooks/events';
+import useEvents from '../hooks/useEvents';
 
 export const Events = () => {
-  const { events, isLoading, errors } = useEvents();
+  const { events, createEvent, isLoading } = useEvents();
   
   return (
     <>
@@ -36,7 +36,7 @@ export const Events = () => {
                 display: 'flex',
               }}
             >
-              <CreateEventsModal />
+              <CreateEventsModal createEvent={createEvent} />
               <AddParticipantsModal sx={{ ml: 2 }} />
             </Box>
           </Box>
