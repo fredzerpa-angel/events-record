@@ -16,7 +16,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
 };
 
-export default function AddParticipantsModal(props) {
+export default function AddParticipantsModal({addParticipants, ...props}) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
 
@@ -47,7 +47,7 @@ export default function AddParticipantsModal(props) {
       >
         <Fade in={open}>
           <Container maxWidth='sm' disableGutters sx={style}>
-            <AddParticipantsForm closeModal={handleClose}/>
+            <AddParticipantsForm addParticipants={addParticipants} closeModal={handleClose}/>
           </Container>
         </Fade>
       </Modal>

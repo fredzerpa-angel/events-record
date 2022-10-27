@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchEvents, addNewEvent } from './requests';
+import { fetchEvents, addNewEvent, addNewParticipants } from './requests';
 
 const useEvents = () => {
   const [events, setEvents] = useState([]);
@@ -16,8 +16,8 @@ const useEvents = () => {
       setIsLoading(true);
 
       const response = await addNewEvent(event);
+      // TODO: Change when server side is being developed
       if (response.ok) {
-        // TODO: Change when server side is being developed
         const newEvent = { id: events.at(-1).id + 1, ...event };
         setEvents([...events, newEvent]);
       }
@@ -28,12 +28,26 @@ const useEvents = () => {
     [events]
   );
 
+  const addParticipants = useCallback(async (event, participants) => {
+    setIsLoading(true);
+
+    const response = await addNewParticipants(event, participants);
+    // TODO: Change when server side is being developed
+    if (response.ok) {
+      const updatedEvents = JSON.parse(window.localStorage.getItem('events'));
+      setEvents(updatedEvents);
+    }
+
+    setIsLoading(false);
+    return response;
+  }, []);
+
   useEffect(() => {
     setIsLoading(true);
     getEvents();
   }, [getEvents]);
 
-  return { events, createEvent, isLoading };
+  return { events, createEvent, addParticipants, isLoading };
 };
 
 export default useEvents;

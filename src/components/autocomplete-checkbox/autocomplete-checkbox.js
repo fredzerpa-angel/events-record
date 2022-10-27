@@ -16,6 +16,7 @@ export const AutocompleteCheckbox = ({
     <Autocomplete
       {...props}
       multiple
+      filterSelectedOptions
       disableCloseOnSelect
       renderOption={(optionProps, option, { selected }) => (
         <li {...optionProps}>

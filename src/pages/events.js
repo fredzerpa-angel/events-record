@@ -6,7 +6,7 @@ import EventsTable from '../components/events/events-table';
 import useEvents from '../hooks/useEvents';
 
 export const Events = () => {
-  const { events, createEvent, isLoading } = useEvents();
+  const { events, createEvent, addParticipants, isLoading } = useEvents();
   
   return (
     <>
@@ -37,7 +37,7 @@ export const Events = () => {
               }}
             >
               <CreateEventsModal createEvent={createEvent} />
-              <AddParticipantsModal sx={{ ml: 2 }} />
+              <AddParticipantsModal sx={{ ml: 2 }} addParticipants={addParticipants} />
             </Box>
           </Box>
           <Card>

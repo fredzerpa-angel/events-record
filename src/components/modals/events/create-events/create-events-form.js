@@ -34,6 +34,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
       type: '',
       name: '',
       overseers: [],
+      participants: [],
       goal: null,
       observations: null,
     },
@@ -51,7 +52,6 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
 
   const onSubmit = async (data, e) => {
     setIsSubmitting(true);
-    // TODO: Open modal with eaither succes or error message
     const response = await createEvent(data);
     setIsSubmitting(false);
     closeModal();
@@ -135,6 +135,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
               <Autocomplete
                 id='event-type'
                 freeSolo
+                autoComplete
                 loading={loadingEvents}
                 options={uniqueEventsType}
                 onClose={handleEventTypeChange}
