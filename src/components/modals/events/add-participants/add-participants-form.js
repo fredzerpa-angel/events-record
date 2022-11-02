@@ -87,10 +87,11 @@ export const AddParticipantsForm = ({ addParticipants, closeModal }) => {
             <Grid item xs={12}>
               <AutocompleteCheckbox
                 options={students.sort(
-                  (a, b) => -b.grade.localeCompare(a.grade)
+                  (a, b) =>
+                    -b.gradeLevelAttended.localeCompare(a.gradeLevelAttended)
                 )}
                 getOptionLabel={student => student.fullname}
-                groupBy={student => student.grade}
+                groupBy={student => student.gradeLevelAttended}
                 label='Participantes'
                 optionsByLabel='fullname'
                 onChange={(oldValue, newValue) => {
