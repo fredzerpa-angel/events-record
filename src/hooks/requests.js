@@ -1,25 +1,10 @@
+import { mongoDB } from '../database/database';
 import { MOCKUP_EMPLOYEES } from '../__mocks__/employees';
-import { MOCKUP_EVENTS } from '../__mocks__/events';
-import { MOCKUP_STUDENTS } from '../__mocks__/students';
 
 export const fetchStudents = async () => {
   try {
-    const students = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const savedStudents = JSON.parse(
-          window.localStorage.getItem('students')
-        );
-        if (savedStudents?.length) return resolve(savedStudents);
-
-        const initialStudents = MOCKUP_STUDENTS;
-        window.localStorage.setItem(
-          'students',
-          JSON.stringify(initialStudents)
-        );
-        return resolve(initialStudents);
-      }, 2000);
-    });
-
+    const students = await mongoDB.collection('students').find();
+    console.log({students});
     return students;
   } catch (err) {
     throw new Error(err);
@@ -52,17 +37,7 @@ export const fetchEmployees = async () => {
 
 export const fetchEvents = async () => {
   try {
-    const events = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const savedEvents = JSON.parse(window.localStorage.getItem('events'));
-        if (savedEvents?.length) return resolve(savedEvents);
-
-        const initialEvents = MOCKUP_EVENTS;
-        window.localStorage.setItem('events', JSON.stringify(initialEvents));
-        return resolve(initialEvents);
-      }, 2000);
-    });
-
+    const events = await mongoDB.collection('events').find();
     return events;
   } catch (err) {
     throw new Error(err);
