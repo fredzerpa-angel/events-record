@@ -54,13 +54,13 @@ export const AddParticipantsForm = ({ addParticipants, closeModal }) => {
                 autoComplete
                 onChange={(oldValue, newValue) => setValue('event', newValue)}
                 noOptionsText={'Evento no encontrado'}
-                options={events.filter(event => event.status !== 'Completado')}
+                options={events}
                 loading={loadingEvents}
                 getOptionLabel={event => event.name}
                 renderOption={(props, event) => {
                   return (
                     <li {...props} key={event.id}>
-                      {event.name}
+                      {event.name} ({event.startDate} - {event.endDate})
                     </li>
                   );
                 }}

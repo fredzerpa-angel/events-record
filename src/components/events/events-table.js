@@ -283,6 +283,7 @@ export default function EventsTable({ visibleFields, ...props }) {
         toolbar: {
           showQuickFilter: true,
           quickFilterProps: { debounceMs: 500 },
+          printOptions: { disableToolbarButton: true },
         },
       }}
       pageSize={pageSize}

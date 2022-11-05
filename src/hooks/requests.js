@@ -1,10 +1,8 @@
-import { mongoDB } from '../database/database';
-import { MOCKUP_EMPLOYEES } from '../__mocks__/employees';
+import { mongoDB } from '../database/mongo';
 
 export const fetchStudents = async () => {
   try {
     const students = await mongoDB.collection('students').find();
-    console.log({students});
     return students;
   } catch (err) {
     throw new Error(err);
@@ -13,22 +11,7 @@ export const fetchStudents = async () => {
 
 export const fetchEmployees = async () => {
   try {
-    const employees = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const savedEmployees = JSON.parse(
-          window.localStorage.getItem('employees')
-        );
-        if (savedEmployees?.length) return resolve(savedEmployees);
-
-        const initialEmployees = MOCKUP_EMPLOYEES;
-        window.localStorage.setItem(
-          'employees',
-          JSON.stringify(initialEmployees)
-        );
-        return resolve(initialEmployees);
-      }, 2000);
-    });
-
+    const employees = await mongoDB.collection('employees').find();
     return employees;
   } catch (err) {
     throw new Error(err);
