@@ -1,4 +1,8 @@
 import { mongoDB } from '../database/mongo';
+import * as Realm from 'realm-web';
+const {
+  BSON: { ObjectId },
+} = Realm;
 
 export const fetchStudents = async () => {
   try {
@@ -20,8 +24,33 @@ export const fetchEmployees = async () => {
 
 export const fetchEvents = async () => {
   try {
-    const events = await mongoDB.collection('events').find();
-    return events;
+    const events = await mongoDB
+      .collection('events')
+      .aggregate([
+        {
+          $lookup: {
+            from: 'employees',
+            localField: 'overseers',
+            foreignField: '_id',
+            as: 'overseers'
+          },
+        },
+        {
+          $lookup: {
+            from: 'students',
+            localField: 'participants',
+            foreignField: '_id',
+            as: 'participants'
+          },
+        },
+      ]);
+
+    console.log({ events });
+
+    return events.map(event => ({
+      id: ObjectId(events['_id']).toString(),
+      ...event,
+    }));
   } catch (err) {
     throw new Error(err);
   }
@@ -29,16 +58,15 @@ export const fetchEvents = async () => {
 
 export const addNewEvent = async event => {
   try {
-    const response = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const events = JSON.parse(window.localStorage.getItem('events'));
-        events.push({ id: events.at(-1).id + 1, ...event });
-        window.localStorage.setItem('events', JSON.stringify(events));
-
-        return resolve({ ok: true });
-      }, 2000);
-    });
-    return response;
+    const eventToAdd = {
+      ...event,
+      overseers: event.overseers.map(({ _id }) => _id),
+    };
+    const response = await mongoDB.collection('events').insertOne(eventToAdd);
+    return {
+      ok: true,
+      data: response,
+    };
   } catch (err) {
     throw new Error(err);
   }
@@ -49,24 +77,16 @@ export const addNewParticipants = async (
   participantsToAdd = []
 ) => {
   try {
-    const response = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const events = JSON.parse(window.localStorage.getItem('events'));
-        const eventsUpdated = events.map(event => {
-          if (event.id !== eventTarget.id) return event;
+    const response = await mongoDB.collection('events').updateOne(
+      { _id: eventTarget._id },
+      {
+        $addToSet: {
+          participants: { $each: participantsToAdd.map(({ _id }) => _id) },
+        },
+      }
+    );
 
-          return {
-            ...event,
-            participants: [...event.participants, ...participantsToAdd],
-          };
-        });
-
-        window.localStorage.setItem('events', JSON.stringify(eventsUpdated));
-
-        return resolve({ ok: true });
-      }, 2000);
-    });
-    return response;
+    return {ok: true};
   } catch (err) {
     throw new Error(err);
   }

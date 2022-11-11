@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, memo} from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -106,14 +106,14 @@ const GridCellExpand = memo(props => {
   );
 });
 
-const renderCellExpand = (params) => {
+const renderCellExpand = params => {
   return (
     <GridCellExpand
       value={params.value || ''}
       width={params.colDef.computedWidth}
     />
   );
-}
+};
 
 // Change all placeholders to Spanish language.
 const DATA_GRID_IN_SPANISH = {
@@ -161,7 +161,8 @@ const columnsConfig = [
     headerName: 'ID',
     type: 'number',
     width: 100,
-    valueFormatter: params => params.value ?? '',
+    valueFormatter: console.log,
+    // valueFormatter: params => params.value ?? '',
     // renderCell: renderCellExpand,
   },
   {
@@ -193,7 +194,8 @@ const columnsConfig = [
     headerName: 'Responsables',
     type: 'string',
     width: 160,
-    valueGetter: params => params.value?.map(overseer => overseer.fullname).join(', '),
+    valueGetter: params =>
+      params.value?.map(overseer => overseer.names).join(', '),
     valueFormatter: params => params.value ?? '',
     renderCell: renderCellExpand,
   },
@@ -253,20 +255,23 @@ const columnsConfig = [
 export default function EventsTable({ visibleFields, ...props }) {
   const [pageSize, setPageSize] = useState(10);
 
-  const initialState = columnsConfig.reduce((state, column) => {
-    // Hide the columns only at mounting time
-    const isVisible = visibleFields.includes(column.field);
-    return { 
-      ...state, 
-      columns: {
-        ...state.columns,
-        columnVisibilityModel: {
-          ...state.columns.columnVisibilityModel, 
-          [column.field]: isVisible 
-        }
-      } 
-    };
-  }, { columns: { columnVisibilityModel: {} } });
+  const initialState = columnsConfig.reduce(
+    (state, column) => {
+      // Hide the columns only at mounting time
+      const isVisible = visibleFields.includes(column.field);
+      return {
+        ...state,
+        columns: {
+          ...state.columns,
+          columnVisibilityModel: {
+            ...state.columns.columnVisibilityModel,
+            [column.field]: isVisible,
+          },
+        },
+      };
+    },
+    { columns: { columnVisibilityModel: {} } }
+  );
 
   return (
     <DataGrid

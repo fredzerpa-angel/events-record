@@ -18,14 +18,13 @@ const useEvents = () => {
       const response = await addNewEvent(event);
       // TODO: Change when server side is being developed
       if (response.ok) {
-        const newEvent = { id: events.at(-1).id + 1, ...event };
-        setEvents([...events, newEvent]);
+        getEvents();
       }
 
       setIsLoading(false);
       return response;
     },
-    [events]
+    [getEvents]
   );
 
   const addParticipants = useCallback(async (event, participants) => {
@@ -34,13 +33,12 @@ const useEvents = () => {
     const response = await addNewParticipants(event, participants);
     // TODO: Change when server side is being developed
     if (response.ok) {
-      const updatedEvents = JSON.parse(window.localStorage.getItem('events'));
-      setEvents(updatedEvents);
+      getEvents();
     }
 
     setIsLoading(false);
     return response;
-  }, []);
+  }, [getEvents]);
 
   useEffect(() => {
     setIsLoading(true);
