@@ -45,8 +45,6 @@ export const fetchEvents = async () => {
         },
       ]);
 
-    console.log({ events });
-
     return events.map(event => ({
       id: ObjectId(events['_id']).toString(),
       ...event,

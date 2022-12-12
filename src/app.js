@@ -14,8 +14,6 @@ const App = () => {
     if (!user) {
       (async () => setUser(await mongoLogIn()))();
     }
-
-    if (user) console.log(user);
   }, [user]);
 
   return (
