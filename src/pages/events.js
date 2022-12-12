@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Card, Container, Typography } from '@mui/material';
 import CreateEventsModal from '../components/modals/events/create-events/create-events-modal';
 import AddParticipantsModal from '../components/modals/events/add-participants/add-participants-modal';
-import EventsTable from '../components/events/events-table';
+import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/useEvents';
 
 export const Events = () => {

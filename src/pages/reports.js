@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/reports/summary-item';
-import EventsTable from '../components/events/events-table';
+import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/useEvents';
 import { useState, useEffect } from 'react';
 

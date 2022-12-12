@@ -3,7 +3,7 @@ import { Layout } from './components/layout';
 import { NotFound } from './pages/not-found';
 import { Events } from './pages/events';
 import { Reports } from './pages/reports';
-import QuickFilteringGrid from './components/events/events-table';
+import QuickFilteringGrid from './components/events-table/events-table';
 
 export const routes = [
   {
