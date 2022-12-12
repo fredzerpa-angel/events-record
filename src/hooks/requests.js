@@ -9,7 +9,8 @@ export const fetchStudents = async () => {
     const students = await mongoDB.collection('students').find();
     return students;
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    return [];
   }
 };
 
@@ -18,39 +19,39 @@ export const fetchEmployees = async () => {
     const employees = await mongoDB.collection('employees').find();
     return employees;
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    return [];
   }
 };
 
 export const fetchEvents = async () => {
   try {
-    const events = await mongoDB
-      .collection('events')
-      .aggregate([
-        {
-          $lookup: {
-            from: 'employees',
-            localField: 'overseers',
-            foreignField: '_id',
-            as: 'overseers'
-          },
+    const events = await mongoDB.collection('events').aggregate([
+      {
+        $lookup: {
+          from: 'employees',
+          localField: 'overseers',
+          foreignField: '_id',
+          as: 'overseers',
         },
-        {
-          $lookup: {
-            from: 'students',
-            localField: 'participants',
-            foreignField: '_id',
-            as: 'participants'
-          },
+      },
+      {
+        $lookup: {
+          from: 'students',
+          localField: 'participants',
+          foreignField: '_id',
+          as: 'participants',
         },
-      ]);
+      },
+    ]);
 
     return events.map(event => ({
       id: ObjectId(events['_id']).toString(),
       ...event,
     }));
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    return [];
   }
 };
 
@@ -66,7 +67,11 @@ export const addNewEvent = async event => {
       data: response,
     };
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    return {
+      ok: false,
+      error: err,
+    };
   }
 };
 
@@ -84,8 +89,9 @@ export const addNewParticipants = async (
       }
     );
 
-    return {ok: true};
+    return { ok: true };
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    return { ok: false };
   }
 };
