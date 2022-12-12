@@ -124,9 +124,9 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                   label='Estatus'
                   defaultValue='Pendiente'
                 >
-                  <MenuItem value='Completado'>Completado</MenuItem>
-                  <MenuItem value='En Progreso'>En Progreso</MenuItem>
                   <MenuItem value='Pendiente'>Pendiente</MenuItem>
+                  <MenuItem value='En Progreso'>En Progreso</MenuItem>
+                  <MenuItem value='Completado'>Completado</MenuItem>
                   <MenuItem value='Cancelado'>Cancelado</MenuItem>
                 </Select>
               </FormControl>
