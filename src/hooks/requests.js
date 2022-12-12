@@ -10,6 +10,7 @@ export const fetchStudents = async () => {
     return students;
   } catch (err) {
     console.error(err);
+    // TODO: Add message to display error fetching the data
     return [];
   }
 };
@@ -20,6 +21,7 @@ export const fetchEmployees = async () => {
     return employees;
   } catch (err) {
     console.error(err);
+    // TODO: Add message to display error fetching the data
     return [];
   }
 };
@@ -46,12 +48,46 @@ export const fetchEvents = async () => {
     ]);
 
     return events.map(event => ({
-      id: ObjectId(events['_id']).toString(),
+      id: ObjectId(event['_id']).toString(),
       ...event,
     }));
   } catch (err) {
     console.error(err);
+    // TODO: Add message to display error fetching the data
     return [];
+  }
+};
+
+export const fetchEventById = async eventId => {
+  try {
+    const event = await mongoDB
+      .collection('events')
+      .aggregate([
+        { $limit: 1 },
+        { $match: { _id: ObjectId(eventId) } },
+        {
+          $lookup: {
+            from: 'employees',
+            localField: 'overseers',
+            foreignField: '_id',
+            as: 'overseers',
+          },
+        },
+        {
+          $lookup: {
+            from: 'students',
+            localField: 'participants',
+            foreignField: '_id',
+            as: 'participants',
+          },
+        },
+      ]);
+    
+    return event[0];
+  } catch (err) {
+    // TODO: Add message to display error fetching the data
+    console.error(err);
+    return {};
   }
 };
 
@@ -67,6 +103,7 @@ export const addNewEvent = async event => {
       data: response,
     };
   } catch (err) {
+    // TODO: Add message to display error fetching the data
     console.error(err);
     return {
       ok: false,
@@ -91,6 +128,7 @@ export const addNewParticipants = async (
 
     return { ok: true };
   } catch (err) {
+    // TODO: Add message to display error fetching the data
     console.error(err);
     return { ok: false };
   }
