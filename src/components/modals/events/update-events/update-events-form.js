@@ -21,23 +21,12 @@ import useEvents from '../../../../hooks/useEvents';
 import useEmployees from '../../../../hooks/useEmployees';
 import { LoadingButton } from '@mui/lab';
 
-const CreateEventsForm = ({ createEvent, closeModal }) => {
+const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
   const { register, getValues, setValue, handleSubmit } = useForm({
-    defaultValues: {
-      startDate: '',
-      endDate: '',
-      organization: '',
-      status: '',
-      type: 'Proyecto de prueba',
-      name: 'Nombre del evento',
-      overseers: [],
-      participants: [],
-      goal: null,
-      observations: null,
-    },
+    defaultValues: { ...eventData },
   });
 
   const uniqueEventsType = [...new Set(events.map(event => event.type))];
@@ -52,7 +41,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
 
   const onSubmit = async (data, e) => {
     setIsSubmitting(true);
-    const response = await createEvent(data);
+    const response = await updateEvent(data);
     setIsSubmitting(false);
     closeModal();
   };
@@ -68,7 +57,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
-          Registro de Eventos
+          Actualizacion de Evento
         </Typography>
         <Box
           component='form'
@@ -165,64 +154,15 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                 fullWidth
                 id='event-name'
                 label='Nombre del Evento'
+                autoComplete='name'
               />
             </Grid>
             <Grid item xs={12}>
               <AutocompleteCheckbox
-                defaultValue={[
-                  {
-                    _id: '6366e5a11417a2bd775c34b5',
-                    documentId: {
-                      number: 82186111,
-                    },
-                    addressOfBirth: {
-                      full: 'CALI DEPARTAMENTO VALLE DEL CAUCA. COLOMBIA',
-                    },
-                    addresses: [
-                      {
-                        full: 'CALLE ORTEGA C/C RES. RIALTO, PORLAMAR ESTADO NUEVA ESPARTA. VENEZUELA',
-                      },
-                    ],
-                    birthdate: '1959-06-19T04:30:00.000Z',
-                    email: 'liliana.montoya@elangel.edu.ve',
-                    fullname: 'MONTOYA AYALA LILIANA PATRICIA',
-                    gender: 'Femenino',
-                    lastnames: 'MONTOYA AYALA',
-                    names: 'LILIANA PATRICIA',
-                    status: 'ACTIVO',
-                    type: 'Suplente',
-                  },
-                  {
-                    _id: '6366e5a11417a2bd775c3522',
-                    documentId: {
-                      number: 17897829,
-                    },
-                    addressOfBirth: {
-                      full: 'PORLAMAR ESTADO NUEVA ESPARTA. VENEZUELA',
-                    },
-                    addresses: [
-                      {
-                        full: 'VILLA ROSA MUNICIPIO GARCIA, PORLAMAR ESTADO NUEVA ESPARTA. VENEZUELA',
-                      },
-                    ],
-                    birthdate: '1989-10-17T04:00:00.000Z',
-                    email: 'margaret.rojas@elangel.edu.ve',
-                    fullname: 'ROJAS SALAZAR MARGARET CAROLINA',
-                    gender: 'Femenino',
-                    lastnames: 'ROJAS SALAZAR',
-                    names: 'MARGARET CAROLINA',
-                    phones: {
-                      main: '0412-04120931191',
-                    },
-                    status: 'ACTIVO',
-                    type: 'Titular',
-                  },
-                ]}
                 options={employees}
                 onChange={(oldValue, newValue) =>
                   setValue('overseers', newValue)
                 }
-                isOptionEqualToValue={(option, value) => {console.log({option, value}); return true}}
                 loading={loadingEmployees}
                 getOptionLabel={teacher => teacher.fullname}
                 optionsByLabel='fullname'
@@ -283,4 +223,4 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
   );
 };
 
-export default CreateEventsForm;
+export default UpdateEventsForm;
