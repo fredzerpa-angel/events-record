@@ -16,7 +16,7 @@ import { useState, useEffect } from 'react';
 
 export const Reports = () => {
   const [stats, setStats] = useState([]);
-  const { events, isLoading } = useEvents();
+  const { events, updateEvent, isLoading } = useEvents();
 
   useEffect(() => {
     const stats = [
@@ -77,6 +77,7 @@ export const Reports = () => {
                 <Divider />
                 <EventsTable
                   loading={isLoading}
+                  updateEvent={updateEvent}
                   visibleFields={[
                     'name',
                     'organization',
