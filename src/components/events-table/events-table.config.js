@@ -161,7 +161,6 @@ export const COLUMNS_CONFIG = [
     headerName: 'ID',
     type: 'number',
     width: 100,
-    valueFormatter: console.log,
     // valueFormatter: params => params.value ?? '',
     // renderCell: renderCellExpand,
   },

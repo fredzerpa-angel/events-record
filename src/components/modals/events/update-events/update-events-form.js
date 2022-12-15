@@ -19,12 +19,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
 import useEvents from '../../../../hooks/useEvents';
 import useEmployees from '../../../../hooks/useEmployees';
+import useStudents from '../../../../hooks/useStudents';
 import { LoadingButton } from '@mui/lab';
 
 const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
+  const { students, isLoading: loadingStudents } = useStudents();
   const { register, getValues, setValue, control, handleSubmit } = useForm({
     defaultValues: eventData,
   });
@@ -207,7 +209,28 @@ const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
                 autoComplete='observations'
               />
             </Grid>
-
+            <Grid item xs={12}>
+              <Controller
+                render={({ field: { ref, ...fieldProps} }) => (
+                  <AutocompleteCheckbox
+                    {...fieldProps}
+                    options={students}
+                    loading={loadingStudents}
+                    onChange={(oldValue, newValue) =>
+                      setValue('participants', newValue)
+                    }
+                    getOptionLabel={teacher => teacher.fullname}
+                    optionsByLabel='fullname'
+                    label='Participantes'
+                    isOptionEqualToValue={(option, value) =>
+                      option.fullname === value.fullname
+                    }
+                  />
+                )}
+                control={control}
+                name='participants'
+              />
+            </Grid>
             {/* Buttons */}
             <Grid item container xs={12} justifyContent='center'>
               <Grid item container justifyContent='center' xs={5}>

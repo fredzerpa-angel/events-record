@@ -115,17 +115,22 @@ requests.createEvent = async event => {
 
 requests.updateEvent = async event => {
   try {
+    const { _id, overseers, participants } = event;
     const response = await mongoDB.collection('events').updateOne(
-      { _id: event['_id'] }, // filter by
-      event // Update data
+      { _id }, // filter by
+      {
+        ...event,
+        // ! Remember to only pass the ID 
+        // ! Because the filter of Mongoose will not allow any other data
+        overseers: overseers.map(overseer => overseer['_id']),
+        participants: participants.map(student => student['_id']),
+      } // Update data
     );
 
-    console.log({response});
-    
     return {
       ok: true,
-      data: response
-    }
+      data: response,
+    };
   } catch (err) {
     // TODO: Add message to display error fetching the data
     console.error(err);
@@ -136,10 +141,7 @@ requests.updateEvent = async event => {
   }
 };
 
-requests.addParticipants = async (
-  eventTarget = {},
-  participantsToAdd = []
-) => {
+requests.addParticipants = async (eventTarget = {}, participantsToAdd = []) => {
   try {
     const response = await mongoDB.collection('events').updateOne(
       { _id: eventTarget._id },
@@ -150,9 +152,9 @@ requests.addParticipants = async (
       }
     );
 
-    return { 
+    return {
       ok: true,
-      data: response
+      data: response,
     };
   } catch (err) {
     // TODO: Add message to display error fetching the data
