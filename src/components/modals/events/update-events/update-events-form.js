@@ -13,7 +13,7 @@ import {
   InputLabel,
   CircularProgress,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 // TODO: Change this to use Events from the DB
 import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
@@ -21,23 +21,12 @@ import useEvents from '../../../../hooks/useEvents';
 import useEmployees from '../../../../hooks/useEmployees';
 import { LoadingButton } from '@mui/lab';
 
-const CreateEventsForm = ({ createEvent, closeModal }) => {
+const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
-  const { register, getValues, setValue, handleSubmit } = useForm({
-    defaultValues: {
-      startDate: '',
-      endDate: '',
-      organization: '',
-      status: '',
-      type: '',
-      name: '',
-      overseers: [],
-      participants: [],
-      goal: null,
-      observations: null,
-    },
+  const { register, getValues, setValue, control, handleSubmit } = useForm({
+    defaultValues: eventData,
   });
 
   const uniqueEventsType = [...new Set(events.map(event => event.type))];
@@ -52,7 +41,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
 
   const onSubmit = async (data, e) => {
     setIsSubmitting(true);
-    const response = await createEvent(data);
+    const response = await updateEvent(data);
     setIsSubmitting(false);
     closeModal();
   };
@@ -68,7 +57,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
-          Registro de Eventos
+          Actualizacion de Evento
         </Typography>
         <Box
           component='form'
@@ -132,31 +121,37 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Autocomplete
-                id='event-type'
-                freeSolo
-                autoComplete
-                loading={loadingEvents}
-                options={uniqueEventsType}
-                onClose={handleEventTypeChange}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    {...register('type', { required: true })}
-                    label='Tipo de Evento'
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loadingEvents ? (
-                            <CircularProgress color='inherit' size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
+              <Controller
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    id='event-type'
+                    freeSolo
+                    autoComplete
+                    loading={loadingEvents}
+                    options={uniqueEventsType}
+                    onClose={handleEventTypeChange}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label='Tipo de Evento'
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <>
+                              {loadingEvents ? (
+                                <CircularProgress color='inherit' size={20} />
+                              ) : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
+                      />
+                    )}
                   />
                 )}
+                control={control}
+                name='type'
               />
             </Grid>
             <Grid item xs={12}>
@@ -169,15 +164,25 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <AutocompleteCheckbox
-                options={employees}
-                onChange={(oldValue, newValue) =>
-                  setValue('overseers', newValue)
-                }
-                loading={loadingEmployees}
-                getOptionLabel={teacher => teacher.fullname}
-                optionsByLabel='fullname'
-                label='Responsables'
+              <Controller
+                render={({ field: { ref, ...fieldProps} }) => (
+                  <AutocompleteCheckbox
+                    {...fieldProps}
+                    options={employees}
+                    loading={loadingEmployees}
+                    onChange={(oldValue, newValue) =>
+                      setValue('overseers', newValue)
+                    }
+                    getOptionLabel={teacher => teacher.fullname}
+                    optionsByLabel='fullname'
+                    label='Responsables'
+                    isOptionEqualToValue={(option, value) =>
+                      option.documentId.number === value.documentId.number
+                    }
+                  />
+                )}
+                control={control}
+                name='overseers'
               />
             </Grid>
             <Grid item xs={12}>
@@ -223,7 +228,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                   variant='contained'
                   loading={isSubmitting}
                 >
-                  Crear Evento
+                  Actualizar
                 </LoadingButton>
               </Grid>
             </Grid>
@@ -234,4 +239,4 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
   );
 };
 
-export default CreateEventsForm;
+export default UpdateEventsForm;

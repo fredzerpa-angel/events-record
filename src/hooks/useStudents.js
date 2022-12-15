@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchStudents } from './requests';
+import requests from './requests';
 
 const useStudents = () => {
   const [students, setStudents] = useState([]);
@@ -8,18 +8,19 @@ const useStudents = () => {
 
   const getStudents = useCallback(async () => {
     try {
-      const students = await fetchStudents();
+      const students = await requests.getStudents();
       setStudents(students);
-      setIsLoading(false);
     } catch (err) {
       setErrors(err);
-      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    getStudents();
+    (async () => {
+      setIsLoading(true);
+      await getStudents();
+      setIsLoading(false);
+    })();
   }, [getStudents]);
 
   return { students, isLoading, errors };

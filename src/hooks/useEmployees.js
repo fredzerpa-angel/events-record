@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchEmployees } from './requests';
+import requests from './requests';
 
 const useEmployees = () => {
   const [employees, setEmployees] = useState([]);
@@ -8,18 +8,19 @@ const useEmployees = () => {
   
   const getEmployees = useCallback(async () => {
     try {
-      const employees = await fetchEmployees();
+      const employees = await requests.getEmployees();
       setEmployees(employees);
-      setIsLoading(false);
     } catch (err) {
       setErrors(err);
-      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    getEmployees();
+    (async () => {
+      setIsLoading(true);
+      await getEmployees();
+      setIsLoading(false);
+    })();
   }, [getEmployees]);
 
   return { employees, isLoading, errors };

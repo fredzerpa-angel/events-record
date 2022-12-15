@@ -6,7 +6,7 @@ import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/useEvents';
 
 export const Events = () => {
-  const { events, createEvent, addParticipants, isLoading } = useEvents();
+  const { events, createEvent, updateEvent, addParticipants, isLoading } = useEvents();
   
   return (
     <>
@@ -43,6 +43,7 @@ export const Events = () => {
           <Card>
             <EventsTable
               loading={isLoading}
+              updateEvent={updateEvent}
               visibleFields={[
                 'type',
                 'name',

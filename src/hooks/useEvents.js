@@ -1,25 +1,21 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchEvents, addNewEvent, addNewParticipants } from './requests';
+import requests from './requests';
 
 const useEvents = () => {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const getEvents = useCallback(async () => {
-    const fetchedEvents = await fetchEvents();
+    const fetchedEvents = await requests.getEvents();
     setEvents(fetchedEvents);
-    setIsLoading(false);
   }, []);
 
   const createEvent = useCallback(
     async event => {
       setIsLoading(true);
 
-      const response = await addNewEvent(event);
-      // TODO: Change when server side is being developed
-      if (response.ok) {
-        getEvents();
-      }
+      const response = await requests.createEvent(event);
+      if (response.ok) await getEvents();
 
       setIsLoading(false);
       return response;
@@ -27,25 +23,35 @@ const useEvents = () => {
     [getEvents]
   );
 
-  const addParticipants = useCallback(async (event, participants) => {
+  const updateEvent = async event => {
     setIsLoading(true);
 
-    const response = await addNewParticipants(event, participants);
-    // TODO: Change when server side is being developed
-    if (response.ok) {
-      getEvents();
-    }
+    const response = await requests.updateEvent(event);
+    if (response.ok) await getEvents();
 
     setIsLoading(false);
     return response;
-  }, [getEvents]);
+  };
+
+  const addParticipants = async (event, participants) => {
+    setIsLoading(true);
+
+    const response = await requests.addParticipants(event, participants);
+    if (response.ok) await getEvents();
+
+    setIsLoading(false);
+    return response;
+  };
 
   useEffect(() => {
-    setIsLoading(true);
-    getEvents();
+    (async () => {
+      setIsLoading(true);
+      await getEvents();
+      setIsLoading(false);
+    })();
   }, [getEvents]);
 
-  return { events, createEvent, addParticipants, isLoading };
+  return { events, createEvent, updateEvent, addParticipants, isLoading };
 };
 
 export default useEvents;
