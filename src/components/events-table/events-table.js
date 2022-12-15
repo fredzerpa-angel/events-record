@@ -52,7 +52,10 @@ export default function EventsTable({ visibleFields, updateEvent, ...props }) {
         {...props}
         columns={COLUMNS_CONFIG}
         initialState={initialState}
-        sx={{ padding: '2rem' }}
+        sx={{ 
+          padding: '2rem',
+          '& .MuiDataGrid-row:hover': { cursor: 'pointer'}
+        }}
         autoHeight
         disableColumnFilter
         disableDensitySelector
