@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { COLUMNS_CONFIG, DATA_GRID_IN_SPANISH } from './events-table.config';
 import UpdateEventsModal from '../modals/events/update-events/update-events-modal';
