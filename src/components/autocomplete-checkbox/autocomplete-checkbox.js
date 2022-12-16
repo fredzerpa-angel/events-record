@@ -7,7 +7,7 @@ import { CircularProgress } from '@mui/material';
 
 export const AutocompleteCheckbox = ({
   label,
-  optionsByLabel,
+  displayOptionLabel,
   loading,
   required,
   ...props
@@ -26,7 +26,7 @@ export const AutocompleteCheckbox = ({
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option[optionsByLabel]}
+          {displayOptionLabel(option)}
         </li>
       )}
       renderInput={params => (

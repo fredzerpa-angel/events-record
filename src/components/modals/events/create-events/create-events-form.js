@@ -175,8 +175,12 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                   setValue('overseers', newValue)
                 }
                 loading={loadingEmployees}
-                getOptionLabel={teacher => teacher.fullname}
-                optionsByLabel='fullname'
+                getOptionLabel={teacher =>
+                  `${teacher.names} ${teacher.lastnames}`
+                }
+                displayOptionLabel={teacher =>
+                  `${teacher.names} ${teacher.lastnames}`
+                }
                 label='Responsables'
               />
             </Grid>

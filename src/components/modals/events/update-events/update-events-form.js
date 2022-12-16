@@ -167,16 +167,23 @@ const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
             </Grid>
             <Grid item xs={12}>
               <Controller
-                render={({ field: { ref, ...fieldProps} }) => (
+                render={({ field: { ref, ...fieldProps } }) => (
                   <AutocompleteCheckbox
                     {...fieldProps}
-                    options={employees}
+                    options={employees.sort(
+                      (a, b) => -b.status.localeCompare(a.status)
+                    )}
+                    groupBy={employee => employee.status}
                     loading={loadingEmployees}
                     onChange={(oldValue, newValue) =>
                       setValue('overseers', newValue)
                     }
-                    getOptionLabel={teacher => teacher.fullname}
-                    optionsByLabel='fullname'
+                    getOptionLabel={teacher =>
+                      `${teacher.names} ${teacher.lastnames}`
+                    }
+                    displayOptionLabel={teacher =>
+                      `${teacher.names} ${teacher.lastnames}`
+                    }
                     label='Responsables'
                     isOptionEqualToValue={(option, value) =>
                       option.documentId.number === value.documentId.number
@@ -185,6 +192,38 @@ const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
                 )}
                 control={control}
                 name='overseers'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                render={({ field: { ref, ...fieldProps } }) => (
+                  <AutocompleteCheckbox
+                    {...fieldProps}
+                    options={students.sort(
+                      (a, b) =>
+                        -b.gradeLevelAttended.localeCompare(
+                          a.gradeLevelAttended
+                        )
+                    )}
+                    groupBy={student => student.gradeLevelAttended}
+                    loading={loadingStudents}
+                    onChange={(oldValue, newValue) =>
+                      setValue('participants', newValue)
+                    }
+                    getOptionLabel={student =>
+                      `${student.names} ${student.lastnames}`
+                    }
+                    displayOptionLabel={student =>
+                      `${student.names} ${student.lastnames}`
+                    }
+                    label='Participantes'
+                    isOptionEqualToValue={(option, value) =>
+                      option.fullname === value.fullname
+                    }
+                  />
+                )}
+                control={control}
+                name='participants'
               />
             </Grid>
             <Grid item xs={12}>
@@ -207,28 +246,6 @@ const UpdateEventsForm = ({ updateEvent, eventData, closeModal }) => {
                 rows={4}
                 id='observations'
                 autoComplete='observations'
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                render={({ field: { ref, ...fieldProps} }) => (
-                  <AutocompleteCheckbox
-                    {...fieldProps}
-                    options={students}
-                    loading={loadingStudents}
-                    onChange={(oldValue, newValue) =>
-                      setValue('participants', newValue)
-                    }
-                    getOptionLabel={teacher => teacher.fullname}
-                    optionsByLabel='fullname'
-                    label='Participantes'
-                    isOptionEqualToValue={(option, value) =>
-                      option.fullname === value.fullname
-                    }
-                  />
-                )}
-                control={control}
-                name='participants'
               />
             </Grid>
             {/* Buttons */}

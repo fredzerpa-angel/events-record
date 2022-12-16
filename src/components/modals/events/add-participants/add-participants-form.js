@@ -90,10 +90,14 @@ export const AddParticipantsForm = ({ addParticipants, closeModal }) => {
                   (a, b) =>
                     -b.gradeLevelAttended.localeCompare(a.gradeLevelAttended)
                 )}
-                getOptionLabel={student => student.fullname}
+                getOptionLabel={student =>
+                  `${student.names} ${student.lastnames}`
+                }
+                displayOptionLabel={student =>
+                  `${student.names} ${student.lastnames}`
+                }
                 groupBy={student => student.gradeLevelAttended}
                 label='Participantes'
-                optionsByLabel='fullname'
                 onChange={(oldValue, newValue) => {
                   setValue('participants', newValue);
                 }}
