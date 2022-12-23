@@ -1,13 +1,12 @@
 import { Helmet } from 'react-helmet';
 import { Box, Card, Container, Typography } from '@mui/material';
-import CreateEventsModal from '../components/modals/events/create-events/create-events-modal';
-import AddParticipantsModal from '../components/modals/events/add-participants/add-participants-modal';
+import CreateEventModal from '../components/modals/events/create-event-modal';
 import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/useEvents';
 
 export const Events = () => {
-  const { events, createEvent, updateEvent, addParticipants, isLoading } = useEvents();
-  
+  const { events, createEvent, updateEvent, isLoading } = useEvents();
+
   return (
     <>
       <Helmet>
@@ -36,8 +35,7 @@ export const Events = () => {
                 display: 'flex',
               }}
             >
-              <CreateEventsModal createEvent={createEvent} />
-              <AddParticipantsModal sx={{ ml: 2 }} addParticipants={addParticipants} />
+              <CreateEventModal createEvent={createEvent} />
             </Box>
           </Box>
           <Card>

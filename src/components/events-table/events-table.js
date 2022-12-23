@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { COLUMNS_CONFIG, DATA_GRID_IN_SPANISH } from './events-table.config';
-import UpdateEventsModal from '../modals/events/update-events/update-events-modal';
+import UpdateEventModal from '../modals/events/update-event-modal';
 
 const DEFAULT_EVENT_DATA = {
   startDate: '',
@@ -77,7 +77,7 @@ export default function EventsTable({ visibleFields, updateEvent, ...props }) {
 
 
       {/* Update modal */}
-      <UpdateEventsModal updateEvent={updateEvent} eventData={eventToUpdate} open={openModal} closeModal={closeEventUpdateModal}/>
+      <UpdateEventModal updateEvent={updateEvent} eventData={eventToUpdate} open={openModal} closeModal={closeEventUpdateModal}/>
     </>
   );
 }

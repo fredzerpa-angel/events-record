@@ -13,46 +13,49 @@ import {
   InputLabel,
   CircularProgress,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 // TODO: Change this to use Events from the DB
-import { AutocompleteCheckbox } from '../../../autocomplete-checkbox/autocomplete-checkbox';
-import useEvents from '../../../../hooks/useEvents';
-import useEmployees from '../../../../hooks/useEmployees';
+import { AutocompleteCheckbox } from '../../autocomplete-checkbox/autocomplete-checkbox';
+import useEvents from '../../../hooks/useEvents';
+import useEmployees from '../../../hooks/useEmployees';
 import { LoadingButton } from '@mui/lab';
+import useStudents from '../../../hooks/useStudents';
 
-const CreateEventsForm = ({ createEvent, closeModal }) => {
+const DEFAULT_EVENT_DATA = {
+  startDate: '',
+  endDate: '',
+  organization: '',
+  status: '',
+  type: '',
+  name: '',
+  overseers: [],
+  participants: [],
+  goal: null,
+  observations: null,
+}
+
+const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar' }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
+  const { students, isLoading: loadingStudents } = useStudents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
-  const { register, getValues, setValue, handleSubmit } = useForm({
-    defaultValues: {
-      startDate: '',
-      endDate: '',
-      organization: '',
-      status: '',
-      type: '',
-      name: '',
-      overseers: [],
-      participants: [],
-      goal: null,
-      observations: null,
-    },
+  const { register, getValues, setValue, control, handleSubmit } = useForm({
+    defaultValues: defaultEventData,
   });
 
   const uniqueEventsType = [...new Set(events.map(event => event.type))];
   const handleEventTypeChange = e => {
     const inputEventTypeValue = getValues('type');
     const existsEventType = uniqueEventsType.find(
-      type => type.toLowerCase() === inputEventTypeValue
+      type => type.toLowerCase() === inputEventTypeValue?.toLowerCase()
     );
-
     if (existsEventType) setValue('type', existsEventType);
   };
 
   const onSubmit = async (data, e) => {
     setIsSubmitting(true);
-    const response = await createEvent(data);
+    const response = await onAction(data);
     setIsSubmitting(false);
     closeModal();
   };
@@ -68,7 +71,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
-          Registro de Eventos
+          Crear Evento
         </Typography>
         <Box
           component='form'
@@ -125,38 +128,50 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                   defaultValue='Pendiente'
                 >
                   <MenuItem value='Pendiente'>Pendiente</MenuItem>
-                  <MenuItem value='En Progreso'>En Progreso</MenuItem>
                   <MenuItem value='Completado'>Completado</MenuItem>
                   <MenuItem value='Cancelado'>Cancelado</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Autocomplete
-                id='event-type'
-                freeSolo
-                autoComplete
-                loading={loadingEvents}
-                options={uniqueEventsType}
-                onClose={handleEventTypeChange}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    {...register('type', { required: true })}
-                    label='Tipo de Evento'
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loadingEvents ? (
-                            <CircularProgress color='inherit' size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
+              <Controller
+                control={control}
+                name='type'
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <Autocomplete
+                    onChange={(e, value) => onChange(value)}
+                    onBlur={onBlur}
+                    value={value}
+                    ref={ref}
+                    id='event-type'
+                    freeSolo
+                    autoComplete
+                    loading={loadingEvents}
+                    options={uniqueEventsType}
+                    onClose={handleEventTypeChange}
+                    getOptionLabel={option => option || ''}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label='Tipo de Evento'
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <>
+                              {loadingEvents ? (
+                                <CircularProgress color='inherit' size={20} />
+                              ) : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
+                      />
+                    )
+                    }
                   />
                 )}
+
               />
             </Grid>
             <Grid item xs={12}>
@@ -169,19 +184,64 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <AutocompleteCheckbox
-                options={employees}
-                onChange={(oldValue, newValue) =>
-                  setValue('overseers', newValue)
-                }
-                loading={loadingEmployees}
-                getOptionLabel={teacher =>
-                  `${teacher.names} ${teacher.lastnames}`
-                }
-                displayOptionLabel={teacher =>
-                  `${teacher.names} ${teacher.lastnames}`
-                }
-                label='Responsables'
+              <Controller
+                render={({ field: { ref, ...fieldProps } }) => (
+                  <AutocompleteCheckbox
+                    {...fieldProps}
+                    options={employees.sort(
+                      (a, b) => -b.status.localeCompare(a.status)
+                    )}
+                    groupBy={employee => employee.status}
+                    loading={loadingEmployees}
+                    onChange={(oldValue, newValue) =>
+                      setValue('overseers', newValue)
+                    }
+                    getOptionLabel={teacher =>
+                      `${teacher.names} ${teacher.lastnames}`
+                    }
+                    displayOptionLabel={teacher =>
+                      `${teacher.names} ${teacher.lastnames}`
+                    }
+                    label='Responsables'
+                    isOptionEqualToValue={(option, value) =>
+                      option.documentId.number === value.documentId.number
+                    }
+                  />
+                )}
+                control={control}
+                name='overseers'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                render={({ field: { ref, ...fieldProps } }) => (
+                  <AutocompleteCheckbox
+                    {...fieldProps}
+                    options={students.sort(
+                      (a, b) =>
+                        -b.gradeLevelAttended.localeCompare(
+                          a.gradeLevelAttended
+                        )
+                    )}
+                    groupBy={student => student.gradeLevelAttended}
+                    loading={loadingStudents}
+                    onChange={(oldValue, newValue) =>
+                      setValue('participants', newValue)
+                    }
+                    getOptionLabel={student =>
+                      `${student.names} ${student.lastnames}`
+                    }
+                    displayOptionLabel={student =>
+                      `${student.names} ${student.lastnames}`
+                    }
+                    label='Participantes'
+                    isOptionEqualToValue={(option, value) =>
+                      option.fullname === value.fullname
+                    }
+                  />
+                )}
+                control={control}
+                name='participants'
               />
             </Grid>
             <Grid item xs={12}>
@@ -206,7 +266,6 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                 autoComplete='observations'
               />
             </Grid>
-
             {/* Buttons */}
             <Grid item container xs={12} justifyContent='center'>
               <Grid item container justifyContent='center' xs={5}>
@@ -227,7 +286,7 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
                   variant='contained'
                   loading={isSubmitting}
                 >
-                  Crear Evento
+                  {actionButtonLabel}
                 </LoadingButton>
               </Grid>
             </Grid>
@@ -238,4 +297,4 @@ const CreateEventsForm = ({ createEvent, closeModal }) => {
   );
 };
 
-export default CreateEventsForm;
+export default EventsForm;

@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import UpdateEventsForm from './update-events-form';
+import EventsForm from './events-form';
 import { styled } from '@mui/material';
-import { Scrollbar } from '../../../scrollbar';
+import { Scrollbar } from '../../scrollbar';
 
 const ModalContent = styled(Container)(({ theme }) => ({
   position: 'absolute',
@@ -19,7 +18,7 @@ const ModalContent = styled(Container)(({ theme }) => ({
   },
 }));
 
-export default function UpdateEventsModal({
+export default function UpdateEventModal({
   updateEvent,
   eventData,
   open,
@@ -38,10 +37,11 @@ export default function UpdateEventsModal({
         <Fade in={open}>
           <ModalContent maxWidth='sm' disableGutters>
             <Scrollbar style={{ maxHeight: '90vh' }}>
-              <UpdateEventsForm
-                updateEvent={updateEvent}
-                eventData={eventData}
+              <EventsForm
+                onAction={updateEvent}
+                defaultEventData={eventData}
                 closeModal={closeModal}
+                actionButtonLabel='Actualizar'
               />
             </Scrollbar>
           </ModalContent>
