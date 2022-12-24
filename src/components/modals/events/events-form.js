@@ -12,6 +12,7 @@ import {
   MenuItem,
   InputLabel,
   CircularProgress,
+  FormHelperText,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -40,7 +41,7 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
   const { events, isLoading: loadingEvents } = useEvents();
   const { students, isLoading: loadingStudents } = useStudents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
-  const { register, getValues, setValue, control, handleSubmit } = useForm({
+  const { register, getValues, setValue, control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: defaultEventData,
   });
 
@@ -83,9 +84,11 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('startDate', {
-                  required: true,
+                  required: 'Este campo es obligatorio',
                   validate: value => !!Date.parse(value),
                 })}
+                error={!!errors?.startDate}
+                helperText={errors?.startDate?.message}
                 autoComplete='startDate'
                 fullWidth
                 type='date'
@@ -97,9 +100,11 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('endDate', {
-                  required: true,
+                  required: 'Este campo es obligatorio',
                   validate: value => !!Date.parse(value),
                 })}
+                error={!!errors?.endDate}
+                helperText={errors?.endDate?.message}
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
@@ -110,7 +115,9 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('organization', { required: true })}
+                {...register('organization', { required: 'Este campo es obligatorio' })}
+                error={!!errors?.organization}
+                helperText={errors?.organization?.message}
                 autoComplete='organization'
                 fullWidth
                 id='organization'
@@ -121,7 +128,8 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
               <FormControl fullWidth>
                 <InputLabel id='status-label'>Estatus</InputLabel>
                 <Select
-                  {...register('status', { required: true })}
+                  {...register('status', { required: 'Este campo es obligatorio' })}
+                  error={!!errors?.status}
                   labelId='status-label'
                   id='status'
                   label='Estatus'
@@ -131,29 +139,30 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
                   <MenuItem value='Completado'>Completado</MenuItem>
                   <MenuItem value='Cancelado'>Cancelado</MenuItem>
                 </Select>
+                <FormHelperText error={!!errors?.status}>{errors?.status?.message}</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Controller
                 control={control}
                 name='type'
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
+                rules={{ required: 'Este campo es obligatorio' }}
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <Autocomplete
+                    {...fieldProps}
                     onChange={(e, value) => onChange(value)}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
                     id='event-type'
                     freeSolo
                     autoComplete
+                    autoSelect
                     loading={loadingEvents}
                     options={uniqueEventsType}
                     onClose={handleEventTypeChange}
-                    getOptionLabel={option => option || ''}
                     renderInput={params => (
                       <TextField
                         {...params}
+                        error={!!errors?.type}
+                        helperText={errors?.type?.message}
                         label='Tipo de Evento'
                         InputProps={{
                           ...params.InputProps,
@@ -176,7 +185,9 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
             </Grid>
             <Grid item xs={12}>
               <TextField
-                {...register('name', { required: true })}
+                {...register('name', { required: 'Este campo es obligatorio' })}
+                error={!!errors?.name}
+                helperText={errors?.name?.message}
                 fullWidth
                 id='event-name'
                 label='Nombre del Evento'
