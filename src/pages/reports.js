@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { DateTime } from 'luxon';
 import { Helmet } from 'react-helmet';
 import {
   Box,
@@ -12,18 +14,38 @@ import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/reports/summary-item';
 import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/useEvents';
-import { useState, useEffect } from 'react';
 
 export const Reports = () => {
   const [stats, setStats] = useState([]);
   const { events, updateEvent, isLoading } = useEvents();
 
   useEffect(() => {
+    const ongoingEvents = events.reduce((ongoing, event) => {
+      const { startDate, endDate } = event;
+      const hasStarted = DateTime.fromISO(startDate).diffNow().milliseconds < 0; // If is negative then it's an older date
+      const hasFinished = DateTime.fromISO(endDate).diffNow().milliseconds < 0; // If is negative then it's an older date
+
+      if (hasStarted && !hasFinished) ongoing.push(event)
+
+      return ongoing;
+    }, [])
+    const sortedEvents = events.sort((a, b) => DateTime.fromISO(a.startDate).diff(DateTime.fromISO(b.startDate)).milliseconds);
+    const nextEvent = events.reduce((next, event) => {
+      const eventDateTime = DateTime.fromISO(event.startDate);
+      const timeToStart = eventDateTime.diffNow().milliseconds;
+      if (timeToStart < 0) return next; // if it's negative it has already started
+
+      const isAtLaterDate = next && eventDateTime.diff(DateTime.fromISO(next.startDate)).milliseconds > 0;
+      if (isAtLaterDate) return next;
+
+      return event;
+    }, null)
+
     const stats = [
       {
-        content: String(events?.length),
+        content: String(ongoingEvents.length),
         icon: EmojiEvents,
-        label: 'Eventos',
+        label: 'Eventos en curso',
       },
       {
         content: String(
@@ -36,9 +58,9 @@ export const Reports = () => {
         label: 'Participantes',
       },
       {
-        content: events.at(-1)?.name,
+        content: nextEvent?.name,
         icon: Event,
-        label: 'Ultimo Evento',
+        label: 'Proximo Evento',
       },
     ];
     setStats(stats);
