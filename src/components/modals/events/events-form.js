@@ -17,11 +17,11 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 
 // TODO: Change this to use Events from the DB
-import { AutocompleteCheckbox } from '../../autocomplete-checkbox/autocomplete-checkbox';
-import useEvents from '../../../hooks/useEvents';
-import useEmployees from '../../../hooks/useEmployees';
+import { AutocompleteCheckbox } from '../../autocomplete-checkbox';
+import useEvents from '../../../hooks/events.hooks';
+import useEmployees from '../../../hooks/employees.hooks';
 import { LoadingButton } from '@mui/lab';
-import useStudents from '../../../hooks/useStudents';
+import useStudents from '../../../hooks/students.hooks';
 
 const DEFAULT_EVENT_DATA = {
   startDate: '',
@@ -36,7 +36,7 @@ const DEFAULT_EVENT_DATA = {
   observations: null,
 }
 
-const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar' }) => {
+const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar' }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
   const { students, isLoading: loadingStudents } = useStudents();
@@ -56,7 +56,7 @@ const EventsForm = ({ onAction = () => undefined, defaultEventData = DEFAULT_EVE
 
   const onSubmit = async (data, e) => {
     setIsSubmitting(true);
-    const response = await onAction(data);
+    await onAction(data);
     setIsSubmitting(false);
     closeModal();
   };
