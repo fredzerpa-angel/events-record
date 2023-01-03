@@ -14,13 +14,14 @@ import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/summary-item';
 import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/events.hooks';
+import { useAuth } from '../hooks/auth.hooks';
 
-export const Dashboard = ({ profile }) => {
+export const Dashboard = () => {
   const [stats, setStats] = useState([]);
   const { events, updateEvent, isLoading } = useEvents();
+  const { profile } = useAuth();
 
   useEffect(() => {
-    console.log({ profile })
     const ongoingEvents = events.reduce((ongoing, event) => {
       const { startDate, endDate } = event;
       const hasStarted = DateTime.fromISO(startDate).diffNow().milliseconds < 0; // If is negative then it's an older date
@@ -64,7 +65,7 @@ export const Dashboard = ({ profile }) => {
       },
     ];
     setStats(stats);
-  }, [events, profile]);
+  }, [events]);
 
   return (
     <>

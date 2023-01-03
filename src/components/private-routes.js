@@ -1,8 +1,7 @@
 import React from "react";
 import { Box, CircularProgress } from "@mui/material";
-import { useEffect } from "react";
 import { Outlet } from "react-router"
-import useAuth from "../hooks/auth.hooks";
+import { useAuth } from "../hooks/auth.hooks";
 
 const Loader = () => (
   <Box
@@ -19,14 +18,10 @@ const Loader = () => (
 );
 
 
-const PrivateRoutes = (props) => {
+const PrivateRoutes = () => {
   const { profile } = useAuth();
 
-  useEffect(() => {
-    console.log({ profile });
-  }, [profile]);
-
-  return (profile ? <Outlet {...props} profile={profile} /> : <Loader />)
+  return (profile ? <Outlet /> : <Loader />)
 }
 
 export default PrivateRoutes;

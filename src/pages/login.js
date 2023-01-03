@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import {
   Avatar,
   TextField,
@@ -14,10 +13,8 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { GoogleLogin } from '@react-oauth/google';
-import useCookies from 'react-cookie/cjs/useCookies';
-import { DateTime } from 'luxon';
+import { useAuth } from '../hooks/auth.hooks';
 import jwtDecode from 'jwt-decode';
-
 
 function Copyright(props) {
   return (
@@ -32,35 +29,10 @@ function Copyright(props) {
   );
 }
 
-const Login = ({ setProfile }) => {
+const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const { onGoogleLoginSuccess, onGoogleLoginFailure } = useAuth();
   const { register, handleSubmit } = useForm();
-  const [cookie, setCookie, removeCookie] = useCookies(['profile']);
-  const navigate = useNavigate();
-
-
-  const onGoogleLoginSuccess = (credentialResponse = {}) => {
-    const credentials = jwtDecode(credentialResponse.credential); // Decode Token
-    const currentDateTime = DateTime.now();
-    const twoMonthsDate = currentDateTime.plus({ months: 2 }).diffNow();
-
-    // Take only required information - Remove unnecessary info
-    const { picture, email, name: fullName, given_name: firstName, family_name: lastName } = credentials;
-    const googleProfile = { picture, email, fullName, firstName, lastName };
-    setCookie('profile', googleProfile, {
-      path: '/',
-      secure: true,
-      maxAge: twoMonthsDate.as('seconds'), // Indicates the number of seconds until the cookie expires. 
-    });
-    navigate('/');
-  }
-
-  const onGoogleLoginFailure = (err) => {
-    console.log('failed:', err);
-    removeCookie('profile'); // Remove any auth in case of error
-  };
-
-
 
   const onFormSubmit = async (data, e) => {
     setIsLoggingIn(true);
@@ -127,7 +99,10 @@ const Login = ({ setProfile }) => {
               }
             }}>
             <GoogleLogin
-              onSuccess={onGoogleLoginSuccess}
+              onSuccess={credentialResponse => {
+                const credentialData = jwtDecode(credentialResponse.credential); // Decode Token
+                onGoogleLoginSuccess(credentialData)
+              }}
               onError={onGoogleLoginFailure}
               useOneTap
               cancel_on_tap_outside={false}

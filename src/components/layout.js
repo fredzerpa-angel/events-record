@@ -33,13 +33,13 @@ const LayoutContainer = styled('div')({
   overflow: 'auto',
 });
 
-export const Layout = (props) => (
+export const Layout = () => (
   <LayoutRoot>
     <Navbar />
     <Sidebar />
     <LayoutContent>
       <LayoutContainer>
-        <Outlet />4
+        <Outlet />
         <Footer />
       </LayoutContainer>
     </LayoutContent>

@@ -1,7 +1,8 @@
-import { AppBar, Avatar, Box, Toolbar } from '@mui/material';
+import { AppBar, Box, Toolbar } from '@mui/material';
+import AccountMenu from './account-menu';
 import { Logo } from './logo';
 
-export const Navbar = () => (
+export const Navbar = ({ profile }) => (
   <AppBar
     elevation={1}
     sx={{ backgroundColor: '#ffffff' }}
@@ -30,9 +31,7 @@ export const Navbar = () => (
         <Logo />
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Avatar
-        alt="User"
-      />
+      <AccountMenu />
     </Toolbar>
   </AppBar>
 );
