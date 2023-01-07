@@ -1,7 +1,7 @@
-import React from "react";
+import { useContext } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import { Outlet } from "react-router"
-import { useAuth } from "../hooks/auth.hooks";
+import { AuthContext } from "../hooks/auth.hooks";
 
 const Loader = () => (
   <Box
@@ -19,7 +19,7 @@ const Loader = () => (
 
 
 const PrivateRoutes = () => {
-  const { profile } = useAuth();
+  const { profile } = useContext(AuthContext);
 
   return (profile ? <Outlet /> : <Loader />)
 }

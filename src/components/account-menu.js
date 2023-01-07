@@ -1,10 +1,10 @@
+import { useContext, useState } from 'react';
 import { Logout } from '@mui/icons-material';
 import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
-import { useState } from 'react';
-import { useAuth } from '../hooks/auth.hooks';
+import { AuthContext } from '../hooks/auth.hooks';
 
 const AccountMenu = () => {
-  const { profile: { picture, email, fullName, firstName, lastName }, signOut } = useAuth();
+  const { profile: { picture, fullName }, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -65,7 +65,7 @@ const AccountMenu = () => {
           <Avatar alt={fullName} src={picture} /> {fullName}
         </MenuItem>
         <Divider />
-        <MenuItem onClick={signOut}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

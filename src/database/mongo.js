@@ -1,4 +1,4 @@
-import * as Realm from 'realm-web'; 
+import * as Realm from 'realm-web';
 export const mongoApp = new Realm.App({ id: process.env.REACT_APP_MONGO_REALM_APP_ID });
 export const mongoClient = mongoApp.currentUser?.mongoClient(process.env.REACT_APP_MONGO_CLUSTER);
 export const mongoDB = mongoClient?.db(process.env.REACT_APP_MONGO_DATABASE);

@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Container, Typography } from '@mui/material';
 
-export const NotFound = () => (
+const NotFound = () => (
   <Box
     sx={{
       width: '100%',
@@ -47,3 +47,5 @@ export const NotFound = () => (
     </Container>
   </Box>
 );
+
+export default NotFound;

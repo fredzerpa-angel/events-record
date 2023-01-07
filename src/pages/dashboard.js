@@ -14,12 +14,10 @@ import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/summary-item';
 import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/events.hooks';
-import { useAuth } from '../hooks/auth.hooks';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const [stats, setStats] = useState([]);
   const { events, updateEvent, isLoading } = useEvents();
-  const { profile } = useAuth();
 
   useEffect(() => {
     const ongoingEvents = events.reduce((ongoing, event) => {
@@ -120,3 +118,5 @@ export const Dashboard = () => {
     </>
   );
 };
+
+export default Dashboard;

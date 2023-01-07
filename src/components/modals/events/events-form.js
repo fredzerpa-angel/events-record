@@ -22,6 +22,7 @@ import useEvents from '../../../hooks/events.hooks';
 import useEmployees from '../../../hooks/employees.hooks';
 import { LoadingButton } from '@mui/lab';
 import useStudents from '../../../hooks/students.hooks';
+import { DateTime } from 'luxon';
 
 const DEFAULT_EVENT_DATA = {
   startDate: '',
@@ -85,7 +86,10 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
               <TextField
                 {...register('startDate', {
                   required: 'Este campo es obligatorio',
-                  validate: value => !!Date.parse(value),
+                  validate: {
+                    isDate: value => !!Date.parse(value),
+                  },
+                  setValueAs: value => DateTime.fromISO(value).toJSDate()
                 })}
                 error={!!errors?.startDate}
                 helperText={errors?.startDate?.message}
@@ -101,7 +105,10 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
               <TextField
                 {...register('endDate', {
                   required: 'Este campo es obligatorio',
-                  validate: value => !!Date.parse(value),
+                  validate: {
+                    isDate: value => !!Date.parse(value),
+                  },
+                  setValueAs: value => DateTime.fromISO(value).toJSDate()
                 })}
                 error={!!errors?.endDate}
                 helperText={errors?.endDate?.message}

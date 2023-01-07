@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Avatar,
@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from '../hooks/auth.hooks';
 import jwtDecode from 'jwt-decode';
+import { AuthContext } from '../hooks/auth.hooks';
 
 function Copyright(props) {
   return (
@@ -31,7 +31,7 @@ function Copyright(props) {
 
 const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const { onGoogleLoginSuccess, onGoogleLoginFailure } = useAuth();
+  const { onGoogleLoginSuccess, onGoogleLoginFailure } = useContext(AuthContext);
   const { register, handleSubmit } = useForm();
 
   const onFormSubmit = async (data, e) => {

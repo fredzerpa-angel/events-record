@@ -4,7 +4,7 @@ import CreateEventModal from '../components/modals/events/create-event-modal';
 import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/events.hooks';
 
-export const Events = () => {
+const Events = () => {
   const { events, createEvent, updateEvent, isLoading } = useEvents();
 
   return (
@@ -62,3 +62,5 @@ export const Events = () => {
     </>
   );
 };
+
+export default Events;

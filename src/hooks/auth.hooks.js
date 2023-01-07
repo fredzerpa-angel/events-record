@@ -1,11 +1,12 @@
 import { useEffect, useState, useContext, createContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useCookies from 'react-cookie/cjs/useCookies';
 import { DateTime } from 'luxon';
 import { googleLogout } from "@react-oauth/google";
 import { useCallback } from "react";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CookiesProvider } from 'react-cookie';
+import { mongoLogIn } from "../database/mongo";
 
 export const AuthContext = createContext({ profile: null });
 
@@ -34,46 +35,70 @@ const useAuthProvider = () => {
   const [profile, setProfile] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(['profile']);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const signIn = useCallback(() => { }, []) // Use for Log-In Form
-  const signOut = useCallback(() => {
+  const loadUser = useCallback(async (userData) => {
+    // No need to repeat everythin if profile is already setted
+    if (profile) return;
+
+    // Set Database Auth
+    await mongoLogIn();
+    // Set Auth hook data
+    setProfile(userData);
+
+    // Go to Dashboard
+    const isOnLoginPage = location.pathname.includes('login');
+    if (isOnLoginPage) navigate('/', { replace: true });
+  }, [location, navigate, profile]);
+
+  const goToLoginPage = useCallback(() => {
+    const isOnLoginPage = location.pathname.includes('login');
+    if (!isOnLoginPage) navigate('/login', { replace: true });
+  }, [location, navigate])
+
+  // Load logged-in user
+  useEffect(() => {
+    const { profile } = cookies;
+    profile ? loadUser(profile) : goToLoginPage();
+    console.log({ profile });
+  }, [cookies, goToLoginPage, loadUser])
+
+  const login = useCallback((profile) => {
+    const currentDateTime = DateTime.now();
+    const twoMonthsDate = currentDateTime.plus({ months: 2 }).diffNow();
+    setCookie('profile', profile, {
+      path: '/',
+      secure: true,
+      maxAge: twoMonthsDate.as('seconds'), // Remember user profile for 2 months 
+    });
+    // Do not use Load User here, because the setCookie will render the useEffect again
+  }, [setCookie])
+
+  const logout = useCallback(() => {
     googleLogout();
     removeCookie('profile');
     setProfile(null);
   }, [removeCookie])
 
-  const onGoogleLoginSuccess = (credentialData = {}) => {
-    const currentDateTime = DateTime.now();
-    const twoMonthsDate = currentDateTime.plus({ months: 2 }).diffNow();
+  const onEmailSignIn = useCallback(() => { }, []) // TODO
 
+  const onGoogleLoginSuccess = useCallback((credentialData = {}) => {
     // Take only required information - Remove unnecessary info
     const { picture, email, name: fullName, given_name: firstName, family_name: lastName } = credentialData;
     const googleProfile = { picture, email, fullName, firstName, lastName };
-    setCookie('profile', googleProfile, {
-      path: '/',
-      secure: true,
-      maxAge: twoMonthsDate.as('seconds'), // Indicates the number of seconds until the cookie expires. 
-    });
-    navigate('/');
-  }
+    login(googleProfile);
+  }, [login])
 
-  const onGoogleLoginFailure = (err) => {
-    console.log('failed:', err);
-    signOut();
-  };
-
-  // Load logged in user
-  useEffect(() => {
-    const { profile } = cookies;
-    profile ? setProfile(profile) : navigate('/login');
-    console.log({ profile });
-  }, [cookies, setProfile, navigate])
+  const onGoogleLoginFailure = useCallback((err) => {
+    console.log('Google failed:', err);
+    logout();
+  }, [logout]);
 
   return {
     profile,
     onGoogleLoginSuccess,
     onGoogleLoginFailure,
-    signIn,
-    signOut,
+    onEmailSignIn,
+    logout,
   };
 }

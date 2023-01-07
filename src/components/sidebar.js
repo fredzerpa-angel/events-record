@@ -15,7 +15,7 @@ const items = [
   }
 ];
 
-export const Sidebar = () => {
+const Sidebar = () => {
   const location = useLocation();
 
   return (
@@ -77,3 +77,5 @@ export const Sidebar = () => {
     </Drawer>
   );
 };
+
+export default Sidebar;

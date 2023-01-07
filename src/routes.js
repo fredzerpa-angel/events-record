@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { Layout } from './components/layout';
-import { NotFound } from './pages/not-found';
-import { Events } from './pages/events';
-import { Dashboard } from './pages/dashboard';
+import Layout from './components/layout';
+import NotFound from './pages/not-found';
+import Events from './pages/events';
+import Dashboard from './pages/dashboard';
 import Login from './pages/login';
 import PrivateRoutes from './components/private-routes';
 

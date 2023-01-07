@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Navbar } from './navbar';
-import { Sidebar } from './sidebar';
-import { Footer } from './footer';
+import Navbar from './navbar';
+import Sidebar from './sidebar';
+import Footer from './footer';
 
 const LayoutRoot = styled('div')(
   ({ theme }) => ({
@@ -33,7 +33,7 @@ const LayoutContainer = styled('div')({
   overflow: 'auto',
 });
 
-export const Layout = () => (
+const Layout = () => (
   <LayoutRoot>
     <Navbar />
     <Sidebar />
@@ -45,3 +45,5 @@ export const Layout = () => (
     </LayoutContent>
   </LayoutRoot>
 );
+
+export default Layout;

@@ -2,7 +2,7 @@ import { AppBar, Box, Toolbar } from '@mui/material';
 import AccountMenu from './account-menu';
 import { Logo } from './logo';
 
-export const Navbar = ({ profile }) => (
+const Navbar = () => (
   <AppBar
     elevation={1}
     sx={{ backgroundColor: '#ffffff' }}
@@ -35,3 +35,5 @@ export const Navbar = ({ profile }) => (
     </Toolbar>
   </AppBar>
 );
+
+export default Navbar;

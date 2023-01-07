@@ -1,6 +1,6 @@
 import { Box, Container, Link, Typography } from '@mui/material';
 
-export const Footer = () => (
+const Footer = () => (
   <Box component="footer">
     <Container maxWidth="lg">
       <Box
@@ -42,3 +42,5 @@ export const Footer = () => (
     </Container>
   </Box>
 );
+
+export default Footer;

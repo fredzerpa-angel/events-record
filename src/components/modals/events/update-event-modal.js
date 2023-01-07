@@ -18,35 +18,35 @@ const ModalContent = styled(Container)(({ theme }) => ({
   },
 }));
 
-export default function UpdateEventModal({
+const UpdateEventModal = ({
   updateEvent,
   eventData,
   open,
   closeModal,
   ...props
-}) {
-  return (
-    <>
-      <Modal
-        // {...props}
-        open={open}
-        onClose={closeModal}
-        BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500 }}
-      >
-        <Fade in={open}>
-          <ModalContent maxWidth='sm' disableGutters>
-            <Scrollbar style={{ maxHeight: '90vh' }}>
-              <EventsForm
-                onAction={updateEvent}
-                defaultEventData={eventData}
-                closeModal={closeModal}
-                actionButtonLabel='Actualizar'
-              />
-            </Scrollbar>
-          </ModalContent>
-        </Fade>
-      </Modal>
-    </>
-  );
-}
+}) => (
+  <>
+    <Modal
+      {...props}
+      open={open}
+      onClose={closeModal}
+      BackdropComponent={Backdrop}
+      BackdropProps={{ timeout: 500 }}
+    >
+      <Fade in={open}>
+        <ModalContent maxWidth='sm' disableGutters>
+          <Scrollbar style={{ maxHeight: '90vh' }}>
+            <EventsForm
+              onAction={updateEvent}
+              defaultEventData={eventData}
+              closeModal={closeModal}
+              actionButtonLabel='Actualizar'
+            />
+          </Scrollbar>
+        </ModalContent>
+      </Fade>
+    </Modal>
+  </>
+);
+
+export default UpdateEventModal;
