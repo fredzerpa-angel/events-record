@@ -25,16 +25,28 @@ import useStudents from '../../../hooks/students.hooks';
 import { DateTime } from 'luxon';
 
 const DEFAULT_EVENT_DATA = {
-  startDate: '',
-  endDate: '',
+  start: '',
+  end: '',
   organization: '',
   status: '',
   type: '',
-  name: '',
+  title: '',
   overseers: [],
   participants: [],
   goal: null,
   observations: null,
+}
+
+// This function is solely on the reason of because the fetched events comes in JS Date format ...
+// ... which said format is not usable in Date Inputs
+const formatEventsData = (event) => {
+  const formattedEvents = {
+    ...event,
+    start: DateTime.fromJSDate(event.start).toISODate(),
+    end: DateTime.fromJSDate(event.end).toISODate(),
+  }
+
+  return formattedEvents;
 }
 
 const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar' }) => {
@@ -43,7 +55,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
   const { students, isLoading: loadingStudents } = useStudents();
   const { employees, isLoading: loadingEmployees } = useEmployees();
   const { register, getValues, setValue, control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: defaultEventData,
+    defaultValues: formatEventsData(defaultEventData),
   });
 
   const uniqueEventsType = [...new Set(events.map(event => event.type))];
@@ -84,40 +96,40 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('startDate', {
+                {...register('start', {
                   required: 'Este campo es obligatorio',
                   validate: {
                     isDate: value => !!Date.parse(value),
                   },
                   setValueAs: value => DateTime.fromISO(value).toJSDate()
                 })}
-                error={!!errors?.startDate}
-                helperText={errors?.startDate?.message}
-                autoComplete='startDate'
+                error={!!errors?.start}
+                helperText={errors?.start?.message}
+                autoComplete='start'
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
-                id='startDate'
+                id='start'
                 label='Fecha de Inicio'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('endDate', {
+                {...register('end', {
                   required: 'Este campo es obligatorio',
                   validate: {
                     isDate: value => !!Date.parse(value),
                   },
                   setValueAs: value => DateTime.fromISO(value).toJSDate()
                 })}
-                error={!!errors?.endDate}
-                helperText={errors?.endDate?.message}
+                error={!!errors?.end}
+                helperText={errors?.end?.message}
                 fullWidth
                 type='date'
                 InputLabelProps={{ shrink: true }}
-                id='endDate'
+                id='end'
                 label='Fecha de Culminacion'
-                autoComplete='endDate'
+                autoComplete='end'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -192,13 +204,13 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
             </Grid>
             <Grid item xs={12}>
               <TextField
-                {...register('name', { required: 'Este campo es obligatorio' })}
-                error={!!errors?.name}
-                helperText={errors?.name?.message}
+                {...register('title', { required: 'Este campo es obligatorio' })}
+                error={!!errors?.title}
+                helperText={errors?.title?.message}
                 fullWidth
-                id='event-name'
+                id='event-title'
                 label='Nombre del Evento'
-                autoComplete='name'
+                autoComplete='title'
               />
             </Grid>
             <Grid item xs={12}>

@@ -44,13 +44,13 @@ const Events = () => {
               updateEvent={updateEvent}
               visibleFields={[
                 'type',
-                'name',
+                'title',
                 'organization',
                 'overseers',
                 'goal',
                 'participants',
-                'startDate',
-                'endDate',
+                'start',
+                'end',
                 'observations',
                 'status',
               ]}

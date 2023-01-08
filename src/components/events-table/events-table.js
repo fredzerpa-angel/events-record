@@ -4,12 +4,12 @@ import { COLUMNS_CONFIG, DATA_GRID_IN_SPANISH } from './events-table.config';
 import UpdateEventModal from '../modals/events/update-event-modal';
 
 const DEFAULT_EVENT_DATA = {
-  startDate: '',
-  endDate: '',
+  start: '',
+  end: '',
   organization: '',
   status: '',
   type: '',
-  name: '',
+  title: '',
   overseers: [],
   participants: [],
   goal: null,
@@ -18,7 +18,7 @@ const DEFAULT_EVENT_DATA = {
 
 export default function EventsTable({ visibleFields, updateEvent, ...props }) {
   const [pageSize, setPageSize] = useState(10);
-  const [openModal, setOpenUpdateModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [eventToUpdate, setEventToUpdate] = useState(DEFAULT_EVENT_DATA);
 
   const initialState = COLUMNS_CONFIG.reduce(
@@ -52,15 +52,15 @@ export default function EventsTable({ visibleFields, updateEvent, ...props }) {
         {...props}
         columns={COLUMNS_CONFIG}
         initialState={initialState}
-        sx={{ 
+        sx={{
           padding: '2rem',
-          '& .MuiDataGrid-row:hover': { cursor: 'pointer'}
+          '& .MuiDataGrid-row:hover': { cursor: 'pointer' }
         }}
         autoHeight
         disableColumnFilter
         disableDensitySelector
         isCellEditable={params => false}
-        onRowClick={({row: eventData}) => openEventUpdateModal(eventData)}
+        onRowClick={({ row: eventData }) => openEventUpdateModal(eventData)}
         components={{ Toolbar: GridToolbar }}
         componentsProps={{
           toolbar: {
@@ -75,9 +75,8 @@ export default function EventsTable({ visibleFields, updateEvent, ...props }) {
         localeText={DATA_GRID_IN_SPANISH}
       />
 
-
-      {/* Update modal */}
-      <UpdateEventModal updateEvent={updateEvent} eventData={eventToUpdate} open={openModal} closeModal={closeEventUpdateModal}/>
+      {/* On Event Click show modal */}
+      <UpdateEventModal updateEvent={updateEvent} eventData={eventToUpdate} open={openUpdateModal} closeModal={closeEventUpdateModal} />
     </>
   );
 }

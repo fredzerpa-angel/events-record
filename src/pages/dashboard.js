@@ -4,43 +4,41 @@ import { Helmet } from 'react-helmet';
 import {
   Box,
   Card,
-  CardHeader,
   Container,
-  Divider,
   Grid,
   Typography,
 } from '@mui/material';
 import { EmojiEvents, Event, Groups } from '@mui/icons-material';
 import { SummaryItem } from '../components/summary-item';
-import EventsTable from '../components/events-table/events-table';
 import useEvents from '../hooks/events.hooks';
+import EventsCalendar from '../components/events-calendar';
 
 const Dashboard = () => {
   const [stats, setStats] = useState([]);
-  const { events, updateEvent, isLoading } = useEvents();
+  const { events } = useEvents();
 
   useEffect(() => {
     const ongoingEvents = events.reduce((ongoing, event) => {
-      const { startDate, endDate } = event;
-      const hasStarted = DateTime.fromISO(startDate).diffNow().milliseconds < 0; // If is negative then it's an older date
-      const hasFinished = DateTime.fromISO(endDate).diffNow().milliseconds < 0; // If is negative then it's an older date
+      const { start, end } = event;
+      const hasStarted = DateTime.fromJSDate(start).diffNow().milliseconds < 0; // If is negative then it's an older date
+      const hasFinished = DateTime.fromJSDate(end).diffNow().milliseconds < 0; // If is negative then it's an older date
 
       if (hasStarted && !hasFinished) ongoing.push(event)
 
       return ongoing;
     }, [])
-    const nextEvent = events.reduce((next, event) => {
-      const eventDateTime = DateTime.fromISO(event.startDate);
+    const nextEvent = events.reduce((nextEvent, event) => {
+      const eventDateTime = DateTime.fromJSDate(event.start);
       const timeToStart = eventDateTime.diffNow().milliseconds;
-      if (timeToStart < 0) return next; // if it's negative it has already started
+      if (timeToStart < 0) return nextEvent; // if it's negative it has already started
 
-      const isAtLaterDate = next && eventDateTime.diff(DateTime.fromISO(next.startDate)).milliseconds > 0;
-      if (isAtLaterDate) return next;
+      const isAtLaterDate = nextEvent && eventDateTime.diff(DateTime.fromJSDate(nextEvent.start)).milliseconds > 0;
+      if (isAtLaterDate) return nextEvent;
 
       return event;
     }, null)
 
-    const stats = [
+    const statsData = [
       {
         content: String(ongoingEvents.length),
         icon: EmojiEvents,
@@ -57,12 +55,12 @@ const Dashboard = () => {
         label: 'Participantes',
       },
       {
-        content: nextEvent?.name,
+        content: nextEvent?.title,
         icon: Event,
         label: 'Proximo Evento',
       },
     ];
-    setStats(stats);
+    setStats(statsData);
   }, [events]);
 
   return (
@@ -93,23 +91,8 @@ const Dashboard = () => {
               </Grid>
             ))}
             <Grid item xs={12}>
-              <Card variant='outlined'>
-                <CardHeader title='Ultimos Eventos' />
-                <Divider />
-                <EventsTable
-                  loading={isLoading}
-                  updateEvent={updateEvent}
-                  visibleFields={[
-                    'name',
-                    'organization',
-                    'overseers',
-                    'participants',
-                    'startDate',
-                    'endDate',
-                    'status',
-                  ]}
-                  rows={events.filter((event, i) => i < 5)}
-                />
+              <Card variant='outlined' sx={{ p: 2, '.fc-toolbar-title': { textTransform: 'capitalize' } }}>
+                <EventsCalendar events={events} />
               </Card>
             </Grid>
           </Grid>

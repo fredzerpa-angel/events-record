@@ -60,7 +60,6 @@ const useAuthProvider = () => {
   useEffect(() => {
     const { profile } = cookies;
     profile ? loadUser(profile) : goToLoginPage();
-    console.log({ profile });
   }, [cookies, goToLoginPage, loadUser])
 
   const login = useCallback((profile) => {
