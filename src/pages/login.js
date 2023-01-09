@@ -48,7 +48,7 @@ const Login = () => {
       <Grid item xs={false} sm={4} md={7}>
         <SquaresBG count={20} speed={0.7} />
       </Grid>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square alignSelf='center'>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
         <Box
           sx={{
             my: 8,
