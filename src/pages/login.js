@@ -17,19 +17,6 @@ import jwtDecode from 'jwt-decode';
 import { AuthContext } from '../hooks/auth.hooks';
 import SquaresBG from 'react-animated-squares';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://elangel.edu.ve/">
-        U.E. El Angel
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { onGoogleLoginSuccess, onGoogleLoginFailure } = useContext(AuthContext);
@@ -44,7 +31,7 @@ const Login = () => {
   const onFormError = (errors, e) => console.error(errors, e);
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" style={{ height: '100%' }}>
       <Grid item xs={false} sm={4} md={7}>
         <SquaresBG count={20} speed={0.7} />
       </Grid>
@@ -141,7 +128,6 @@ const Login = () => {
             >
               Sign In
             </LoadingButton>
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
