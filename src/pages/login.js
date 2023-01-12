@@ -17,19 +17,6 @@ import jwtDecode from 'jwt-decode';
 import { AuthContext } from '../hooks/auth.hooks';
 import SquaresBG from 'react-animated-squares';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://elangel.edu.ve/">
-        U.E. El Angel
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { onGoogleLoginSuccess, onGoogleLoginFailure } = useContext(AuthContext);
@@ -44,11 +31,11 @@ const Login = () => {
   const onFormError = (errors, e) => console.error(errors, e);
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" sx={{ minHeight: '100vh', height: '100%', overflow: 'auto' }}>
       <Grid item xs={false} sm={4} md={7}>
         <SquaresBG count={20} speed={0.7} />
       </Grid>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square sx={{ minHeight: '100vh' }}>
         <Box
           sx={{
             my: 8,
@@ -69,37 +56,19 @@ const Login = () => {
           <Typography component="h1" variant="h3" mb={2}>
             ¡Bienvenido de vuelta!
           </Typography>
-          <Typography component="h2" variant="h5">
+          <Typography component="h2" variant="h5" mb={1}>
             Accede con tu cuenta Google
           </Typography>
-          <Grid
-            item
-            xs={12}
-            container
-            justifyContent='center'
-            sx={{
-              mt: 1, mb: 2, width: '60%',
-              // Google Button Style
-              button: {
-                width: '100%',
-                maxWidth: '250px',
-                span: {
-                  width: '100%',
-                  justifySelf: 'center'
-                }
-              }
-            }}>
-            <GoogleLogin
-              onSuccess={credentialResponse => {
-                const credentialData = jwtDecode(credentialResponse.credential); // Decode Token
-                onGoogleLoginSuccess(credentialData)
-              }}
-              onError={onGoogleLoginFailure}
-              useOneTap
-              cancel_on_tap_outside={false}
-            />
-          </Grid>
-          <Typography component="h2" variant="h5">
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              const credentialData = jwtDecode(credentialResponse.credential); // Decode Token
+              onGoogleLoginSuccess(credentialData)
+            }}
+            onError={onGoogleLoginFailure}
+            useOneTap
+            cancel_on_tap_outside={false}
+          />
+          <Typography component="h2" variant="h5" mt={2}>
             O Accede con tu Email
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit(onFormSubmit, onFormError)}>
@@ -141,7 +110,6 @@ const Login = () => {
             >
               Sign In
             </LoadingButton>
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
