@@ -93,11 +93,7 @@ requests.getEventById = async eventId => {
 
 requests.createEvent = async event => {
   try {
-    const eventToAdd = {
-      ...event,
-      overseers: event.overseers.map(({ _id }) => _id),
-    };
-    const response = await mongoDB.collection('events').insertOne(eventToAdd);
+    const response = await mongoDB.collection('events').insertOne(event);
 
     return {
       ok: true,

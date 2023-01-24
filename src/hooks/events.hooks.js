@@ -21,6 +21,10 @@ const useEvents = () => {
     async event => {
       setIsLoading(true);
 
+      // Add only Ids for Docs size optimization
+      event.participants = event.participants.map(student => student._id);
+      event.overseers = event.overseers.map(employee => employee._id);
+
       // Add extra meta data
       event.createdBy = profile;
       event.createdAt = DateTime.now().toJSDate(); // Common JS "new Date()" class subtracts 4 hours going to the prev day  

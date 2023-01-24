@@ -27,7 +27,11 @@ export default function CreateEventModal({ createEvent, ...props }) {
   const theme = useTheme();
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'backdropClick') return;
+
+    setOpen(false);
+  }
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -46,13 +50,17 @@ export default function CreateEventModal({ createEvent, ...props }) {
       <Modal
         open={open}
         onClose={handleClose}
-        BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500 }}
+        components={{
+          Backdrop,
+        }}
+        componentsProps={{
+          backdrop: { timeout: 500 }
+        }}
       >
         <Fade in={open}>
           <ModalContent maxWidth='sm' disableGutters>
             <Scrollbar style={{ maxHeight: '90vh' }}>
-              <EventsForm onAction={createEvent} closeModal={handleClose} actionButtonLabel='Crear Evento' />
+              <EventsForm title='Crear Evento' onAction={createEvent} closeModal={handleClose} actionButtonLabel='Crear Evento' />
             </Scrollbar>
           </ModalContent>
         </Fade>

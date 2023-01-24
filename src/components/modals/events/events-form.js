@@ -49,7 +49,7 @@ const formatEventsData = (event) => {
   return formattedEvents;
 }
 
-const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar' }) => {
+const EventsForm = ({ title = 'Evento', onAction = () => new Promise(), defaultEventData = DEFAULT_EVENT_DATA, closeModal, actionButtonLabel = 'Continuar', showActionButtons = true, readOnly = false }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { events, isLoading: loadingEvents } = useEvents();
   const { students, isLoading: loadingStudents } = useStudents();
@@ -68,6 +68,8 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
   };
 
   const onSubmit = async (data, e) => {
+    if (readOnly) return;
+
     setIsSubmitting(true);
     await onAction(data);
     setIsSubmitting(false);
@@ -85,7 +87,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
         }}
       >
         <Typography color='textPrimary' sx={{ mb: 3 }} variant='h4'>
-          Crear Evento
+          {title}
         </Typography>
         <Box
           component='form'
@@ -110,6 +112,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 type='date'
                 InputLabelProps={{ shrink: true }}
                 id='start'
+                inputProps={{
+                  readOnly,
+                }}
                 label='Fecha de Inicio'
               />
             </Grid>
@@ -128,6 +133,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 type='date'
                 InputLabelProps={{ shrink: true }}
                 id='end'
+                inputProps={{
+                  readOnly,
+                }}
                 label='Fecha de Culminacion'
                 autoComplete='end'
               />
@@ -140,6 +148,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 autoComplete='organization'
                 fullWidth
                 id='organization'
+                inputProps={{
+                  readOnly,
+                }}
                 label='Organizacion'
               />
             </Grid>
@@ -151,6 +162,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                   error={!!errors?.status}
                   labelId='status-label'
                   id='status'
+                  inputProps={{
+                    readOnly,
+                  }}
                   label='Estatus'
                   defaultValue='Pendiente'
                 >
@@ -169,6 +183,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 render={({ field: { onChange, ...fieldProps } }) => (
                   <Autocomplete
                     {...fieldProps}
+                    readOnly={readOnly}
                     onChange={(e, value) => onChange(value)}
                     id='event-type'
                     freeSolo
@@ -209,6 +224,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 helperText={errors?.title?.message}
                 fullWidth
                 id='event-title'
+                inputProps={{
+                  readOnly,
+                }}
                 label='Nombre del Evento'
                 autoComplete='title'
               />
@@ -218,6 +236,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 render={({ field: { ref, ...fieldProps } }) => (
                   <AutocompleteCheckbox
                     {...fieldProps}
+                    readOnly={readOnly}
                     options={employees.sort(
                       (a, b) => -b.status.localeCompare(a.status)
                     )}
@@ -247,6 +266,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
                 render={({ field: { ref, ...fieldProps } }) => (
                   <AutocompleteCheckbox
                     {...fieldProps}
+                    readOnly={readOnly}
                     options={students.sort(
                       (a, b) =>
                         -b.gradeLevelAttended.localeCompare(
@@ -278,6 +298,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
               <TextField
                 {...register('goal')}
                 fullWidth
+                inputProps={{
+                  readOnly,
+                }}
                 label='Objetivo'
                 multiline
                 rows={4}
@@ -289,6 +312,9 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
               <TextField
                 {...register('observations')}
                 fullWidth
+                inputProps={{
+                  readOnly,
+                }}
                 label='Observaciones'
                 multiline
                 rows={4}
@@ -297,7 +323,7 @@ const EventsForm = ({ onAction = () => new Promise(), defaultEventData = DEFAULT
               />
             </Grid>
             {/* Buttons */}
-            <Grid item container xs={12} justifyContent='center'>
+            <Grid item container xs={12} justifyContent='center' sx={{ display: showActionButtons ? 'flex' : 'none' }}>
               <Grid item container justifyContent='center' xs={5}>
                 <Button
                   size='large'

@@ -30,13 +30,18 @@ const UpdateEventModal = ({
       {...props}
       open={open}
       onClose={closeModal}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      components={{
+        Backdrop,
+      }}
+      componentsProps={{
+        backdrop: { timeout: 500 }
+      }}
     >
       <Fade in={open}>
         <ModalContent maxWidth='sm' disableGutters>
           <Scrollbar style={{ maxHeight: '90vh' }}>
             <EventsForm
+              title='Actualizar Evento'
               onAction={updateEvent}
               defaultEventData={eventData}
               closeModal={closeModal}
