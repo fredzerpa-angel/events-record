@@ -83,8 +83,8 @@ const useAuthProvider = () => {
 
   const onGoogleLoginSuccess = useCallback((credentialData = {}) => {
     // Take only required information - Remove unnecessary info
-    const { picture, email, name: fullName, given_name: firstName, family_name: lastName } = credentialData;
-    const googleProfile = { picture, email, fullName, firstName, lastName };
+    const { picture: imageUrl, email, name: fullname, given_name: names, family_name: lastnames } = credentialData;
+    const googleProfile = { imageUrl, email, fullname, names, lastnames };
     login(googleProfile);
   }, [login])
 
